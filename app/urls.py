@@ -8,8 +8,10 @@ from .views import PostViewSet
 from . import views
 
 urlpatterns=[
+    url(r'^api/estate/$', views.Estate.as_view())
 ]
 
 router = SimpleRouter()
 router.register('', PostViewSet, basename='posts')
 urlpatterns = router.urls
+
