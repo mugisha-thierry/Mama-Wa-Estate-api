@@ -5,4 +5,5 @@ from django.urls import path
 from . import views
 
 urlpatterns=[
+    url(r'^api/estate/$', views.Estate.as_view())
 ]
