@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+
 import os
 from pathlib import Path
 from decouple import config,Csv
@@ -38,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app'
+    'app',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -76,14 +78,7 @@ WSGI_APPLICATION = 'mama_wa_estate.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'vendors',
-        'USER': 'ian',
-    'PASSWORD':'iankoech',
-    }
-}
+MODE=config("MODE", default="dev")
 # development
 if config('MODE')=="dev":
    DATABASES = {
@@ -92,7 +87,7 @@ if config('MODE')=="dev":
            'NAME': config('DB_NAME'),
            'USER': config('DB_USER'),
            'PASSWORD': config('DB_PASSWORD'),
-           'HOST': config('DB_HOST'),
+        #    'HOST': config('DB_HOST'),
            'PORT': '',
        }
        
@@ -150,5 +145,4 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-if config('MODE')=="dev":
-   DATABASES = 
+ 
