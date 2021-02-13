@@ -13,14 +13,21 @@ class Estate(models.Model):
     description = models.TextField()
    
 
-    def create_neighbourhood(self):
+    def create_estate(self):
         self.save()
 
-    def delete_neighbourhood(self):
+    def delete_estate(self):
         self.delete()
 
     def __str__(self):
         return f"{self.name}"
+
+class Category(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.title
 
 
 
