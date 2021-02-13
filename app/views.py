@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import  Estate,Category
-from .serializer import EstateSerializer,CategorySerializer
+from .models import  Estate,Category,ProductMerch
+from .serializer import EstateSerializer,CategorySerializer,MerchSerializer
+from rest_framework import mixins, viewsets , generics
 
-#........
+
+# Create your views here.
 class Estate(APIView):
     def get(self, request, format=None):
         all_estate = Estate.objects.all()
@@ -34,4 +36,7 @@ class Category(APIView):
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)        
 
 
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = ProductMerch.objects.all()
+    serializer_class = MerchSerializer
 

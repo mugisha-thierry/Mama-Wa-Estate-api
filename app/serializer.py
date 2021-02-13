@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Estate, Category
+from .models import Estate, Category, ProductMerch
+
 
 
 class EstateSerializer(serializers.ModelSerializer):
@@ -17,4 +18,9 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 
+class MerchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductMerch
+        fields = ('id','name', 'description', 'price','title')
+        
 
