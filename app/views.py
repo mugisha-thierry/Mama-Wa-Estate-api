@@ -45,3 +45,5 @@ class VendorsList(APIView):
         all_vendors = Vendor.objects.all()
         serializers = VendorSerializer(all_vendors, many=True)
         return Response(serializers.data)
+
+        
