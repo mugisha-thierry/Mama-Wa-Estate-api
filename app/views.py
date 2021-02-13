@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import  Estate,Category,ProductMerch
-from .serializer import EstateSerializer,CategorySerializer,MerchSerializer
+from .models import  Estate,Category,ProductMerch,Vendor
+from .serializer import EstateSerializer,CategorySerializer,MerchSerializer,VendorSerializer
 from rest_framework import mixins, viewsets , generics
 
 
@@ -40,3 +40,8 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = ProductMerch.objects.all()
     serializer_class = MerchSerializer
 
+class VendorsList(APIView):
+    def get(self, request, format=None):
+        all_vendors = Vendor.objects.all()
+        serializers = VendorSerializer(all_vendors, many=True)
+        return Response(serializers.data)

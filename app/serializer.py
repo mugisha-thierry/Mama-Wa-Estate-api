@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Estate, Category, ProductMerch
+from .models import Estate, Category, ProductMerch,Vendor
 
 
 
@@ -24,3 +24,7 @@ class MerchSerializer(serializers.ModelSerializer):
         fields = ('id','name', 'description', 'price','title')
         
 
+class VendorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vendor
+        fields = '__all__'
