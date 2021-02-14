@@ -5,5 +5,6 @@ from django.urls import path
 from . import views
 
 urlpatterns=[
-    url(r'^api/estate/$', views.Estate.as_view())
+    path('api/estate/', views.estate.as_view()),
+    path('api/category/', views.category.as_view())
 ]
