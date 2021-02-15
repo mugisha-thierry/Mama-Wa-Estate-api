@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import  Estate,Category,ProductMerch,Vendor
 from .serializer import EstateSerializer,CategorySerializer,MerchSerializer,VendorSerializer
-from rest_framework import mixins, viewsets , generics
+from rest_framework import mixins, viewsets , generics, status
 
 
 from django.contrib.auth import login
@@ -13,7 +13,7 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
 
 # Create your views here.
-class Estate(APIView):
+class estate(APIView):
     def get(self, request, format=None):
         all_estate = Estate.objects.all()
         serializers = EstateSerializer(all_estate, many=True)
@@ -28,7 +28,7 @@ class Estate(APIView):
 
 
 
-class Category(APIView):
+class category(APIView):
     def get(self, request, format=None):
         all_category = Category.objects.all()
         serializers =CategorySerializer(all_category, many=True)
