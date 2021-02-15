@@ -8,6 +8,8 @@ from .models import ProductMerch, Estate, Vendor
 from .serializer import MerchSerializer, VendorSerializer
 
 # Create your views here.
+
+
 class Estate(APIView):
     def get(self, request, format=None):
         all_estate = Estate.objects.all()
