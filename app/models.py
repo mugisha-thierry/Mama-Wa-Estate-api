@@ -23,6 +23,7 @@ class Estate(models.Model):
         return f"{self.name}"
 
 
+# Create a profile for the vendors
 
 class Vendor(models.Model):
     '''
@@ -43,7 +44,22 @@ class Vendor(models.Model):
         self.save()
 
     def deleteVendor(self):
-        self.delete()   
+        self.delete()
+
+class Store(models.Model):
+    name = models.CharField(max_length=30)
+    service = models.CharField(max_length=50)
+    vendor = models.ForeignKey(Vendor,on_delete=models.CASCADE)
+    location = models.CharField(max_length=40)
+
+    def saveStore(self):
+        self.save()
+
+    def __str__(self):
+        return self.name
+    
+    def deleteStore(self):
+        self.delete()
 
 class ProductMerch(models.Model):
     name = models.CharField(max_length=40)

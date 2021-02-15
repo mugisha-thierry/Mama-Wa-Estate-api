@@ -8,7 +8,6 @@ from .views import PostViewSet
 from . import views
 
 urlpatterns=[
-    url(r'^api/estate/$', views.Estate.as_view()),
     url(r'^api/vendors/$', views.VendorsList.as_view())
 ]
 
