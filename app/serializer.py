@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Estate, Category, ProductMerch,Vendor
+from django.contrib.auth.models import User
 
 
 
@@ -29,5 +30,10 @@ class VendorSerializer(serializers.ModelSerializer):
         model = Vendor
         fields = '__all__'
 
+# User Serializer
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email')
 
         
