@@ -6,6 +6,12 @@ from .serializer import EstateSerializer,CategorySerializer,MerchSerializer,Vend
 from rest_framework import mixins, viewsets , generics
 
 
+from django.contrib.auth import login
+
+from rest_framework import permissions
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from knox.views import LoginView as KnoxLoginView
+
 # Create your views here.
 class Estate(APIView):
     def get(self, request, format=None):
@@ -47,3 +53,12 @@ class VendorsList(APIView):
         return Response(serializers.data)
 
         
+class LoginAPI(KnoxLoginView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = AuthTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        return super(LoginAPI, self).post(request, format=None)
