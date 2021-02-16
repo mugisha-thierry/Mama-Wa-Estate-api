@@ -13,6 +13,7 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
 
 # Create your views here.
+
 class estate(APIView):
     def get(self, request, format=None):
         all_estate = Estate.objects.all()
