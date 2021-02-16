@@ -8,7 +8,8 @@ from .models import ProductMerch, Estate, Vendor
 from .serializer import MerchSerializer, VendorSerializer
 
 # Create your views here.
-
+def createStore(request):
+    
 
 class Estate(APIView):
     def get(self, request, format=None):
