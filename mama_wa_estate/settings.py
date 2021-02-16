@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'user',
     'app',
     'rest_framework',
-    'django-registration',
+    'django_registration',
 ]
 
 MIDDLEWARE = [

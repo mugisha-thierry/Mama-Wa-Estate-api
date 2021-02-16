@@ -2,6 +2,13 @@ from django.shortcuts import render
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.http import HttpResponse
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+
+from .serializer import EstateSerializer
+from .forms import StoreForm
+
 
 from .serializer import EstateSerializer,CategorySerializer,VendorSerializer
 from rest_framework import mixins, viewsets , generics, status
@@ -26,12 +33,6 @@ from django.contrib.auth import login
 
 from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-
-
-
-
-
-
 
 
 class ListCategory(generics.ListCreateAPIView):
@@ -91,6 +92,7 @@ class ListOrder(generics.ListCreateAPIView):
     serializer_class = OrderSerializer
 
     
+    
 
 
 class DetailOrder(generics.RetrieveUpdateDestroyAPIView):
@@ -148,10 +150,6 @@ class AddToCartView(APIView):
         
         return Response({'Added  Successfully'},status=HTTP_200_OK)
     
-     
-             
-
-
 
 class PostViewSet(viewsets.ModelViewSet):
     name = "product"
