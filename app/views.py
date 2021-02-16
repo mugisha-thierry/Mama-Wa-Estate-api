@@ -90,8 +90,6 @@ class ListOrder(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
-    
-
 
 class DetailOrder(generics.RetrieveUpdateDestroyAPIView):
     name = "order"
