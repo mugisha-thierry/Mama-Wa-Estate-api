@@ -7,8 +7,11 @@ from knox.views import LoginView as KnoxLoginView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import viewsets
-from  .serializers import UserSerializer, RegisterSerializer, AuthTokenSerializer
+from  .serializers import UserSerializer, RegisterSerializer, AuthTokenSerializer, ProfileSerializer
 from django.contrib.auth import authenticate, login, logout
+from .models import Profile
+from django.http import Http404
+from rest_framework import status
 
 # Create your views here.
 
@@ -44,4 +47,20 @@ class UserAPI(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
     def get_object(self):
-        return self.request.user                
+        return self.request.user   
+
+class ProfileList(APIView):
+    """
+    List all profile, or create a new snippet.
+    """
+    def get(self, request, format=None):
+        profile = Profile.objects.all()
+        serializer = ProfileSerializer(profile, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = ProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

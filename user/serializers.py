@@ -2,6 +2,7 @@ from rest_framework import generics, permissions, serializers, exceptions
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
+from .models import Profile
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -64,3 +65,9 @@ class AuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+class ProfileSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Profile
+        fields = ['user', 'image', 'bio']         
