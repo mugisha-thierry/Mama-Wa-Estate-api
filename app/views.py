@@ -14,16 +14,6 @@ from .serializer import MerchSerializer, VendorSerializer
 
 # Create your views here.
 
-@login_required(login_url='/accounts/login/')
-def createStore(request):
-    if request.method == 'POST':
-        store_form = StoreForm(data = request.POST)
-        if store_form.is_valid():
-            new_store  = store_form.save()
-    else:
-        store_form = StoreForm()
-    
-    return HttpResponse('Store Creation form needs to be displayed at this point')
 
 class Estate(APIView):
     def get(self, request, format=None):
