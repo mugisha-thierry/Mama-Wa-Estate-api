@@ -39,12 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # third party libraries
+    'rest_framework',
+    'rest_framework.authtoken',
     'bootstrap4',
-    'user',
-    # 'knox',
     'corsheaders',
+
+    # local apps
+    'user',
     'app',
-    'rest_framework'
+    
 ]
 
 MIDDLEWARE = [
@@ -167,6 +172,10 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
         # 'knox.auth.TokenAuthentication',
     ]
 }
+
+AUTH_USER_MODEL = 'user.CustomUser'
+ACCOUNT_USERNAME_REQUIRED = False
