@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework import generics, permissions,status
 from django.contrib.auth.models import User
-from knox.models import AuthToken
+# from knox.models import AuthToken
 from rest_framework.views import APIView
-from knox.views import LoginView as KnoxLoginView
+# from knox.views import LoginView as KnoxLoginView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import viewsets
@@ -25,11 +25,11 @@ class RegisterAPI(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         return Response({
-        # "user": UserSerializer(user, context=self.get_serializer_context).data,
-        "token": AuthToken.objects.create(user)[1]
+        "user": UserSerializer(user, context=self.get_serializer_context).data,
+        # "token": AuthToken.objects.create(user)[1]
         })   
 
-class LoginAPI(KnoxLoginView):
+class LoginAPI(generics.GenericAPIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
