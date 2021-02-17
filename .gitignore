@@ -89,3 +89,6 @@ dmypy.json
 
 # images
 .jpg
+
+# migrations
+migrations/
