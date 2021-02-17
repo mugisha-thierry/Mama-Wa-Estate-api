@@ -8,14 +8,14 @@ from .views import PostViewSet, StoreForm
 from . import views
 
 urlpatterns=[
-    url(r'^$', views.createStore),
     url(r'^api/vendors/$', views.VendorsList.as_view()),
-    url(r'^createStore/$', views.createStore),
+    url(r'^api/stores/$', views.StoresList.as_view()),
+    
 ]
 
-# router = SimpleRouter()
-# router.register('', PostViewSet, basename='posts')
-# urlpatterns = router.urls
+router = SimpleRouter()
+router.register('', PostViewSet, basename='posts')
+urlpatterns = router.urls
 
 if settings.DEBUG:
     urlpatterns+= static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

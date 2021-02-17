@@ -9,8 +9,8 @@ from .forms import StoreForm
 
 
 from rest_framework import mixins, viewsets , generics
-from .models import ProductMerch, Estate, Vendor
-from .serializer import MerchSerializer, VendorSerializer
+from .models import ProductMerch, Estate, Vendor, Store
+from .serializer import MerchSerializer, VendorSerializer, StoreSerializer
 
 # Create your views here.
 
@@ -30,4 +30,10 @@ class VendorsList(APIView):
     def get(self, request, format=None):
         all_vendors = Vendor.objects.all()
         serializers = VendorSerializer(all_vendors, many=True)
+        return Response(serializers.data)
+
+class StoresList(APIView):
+    def get(self, request, format=None):
+        all_stores = Store.objects.all()
+        serializers = StoreSerializer(all_stores, many=True)
         return Response(serializers.data)
