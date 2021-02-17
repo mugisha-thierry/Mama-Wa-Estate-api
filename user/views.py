@@ -1,47 +1,84 @@
-from django.shortcuts import render
-from rest_framework import generics, permissions,status
-from django.contrib.auth.models import User
-# from knox.models import AuthToken
-from rest_framework.views import APIView
-# from knox.views import LoginView as KnoxLoginView
-from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ImproperlyConfigured
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import viewsets
-from  .serializers import UserSerializer, RegisterSerializer, AuthTokenSerializer
-from django.contrib.auth import authenticate, login, logout
 
-# Create your views here.
 
-class UserSerializer(viewsets.ModelViewSet):
-    # api endpoint that allows users to be viewed or edited
-    queryset = User.objects.all().order_by()
-    serializer_class = UserSerializer
+#local imports
+from . import serializers
+from .utils import get_and_authenticate_user, create_user_account
 
-class RegisterAPI(generics.GenericAPIView):
-    serializer_class = RegisterSerializer
+User = get_user_model()
 
-    def post(self, request, *args, **kwargs):
+class AuthViewSet(viewsets.GenericViewSet):
+    name = "Auth"
+    permission_classes = [AllowAny, ]
+    serializer_class = serializers.EmptySerializer
+    serializer_classes = {
+        'login': serializers.UserLoginSerializer,
+        'register': serializers.UserRegisterSerializer
+    }
+
+
+    @action(methods=['POST', 'GET'], detail=False)
+    def register(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        return Response({
-        "user": UserSerializer(user, context=self.get_serializer_context).data,
-        # "token": AuthToken.objects.create(user)[1]
-        })   
+        user = create_user_account(**serializer.validated_data)
+        serialized_data = serializers.AuthUserSerializer(user).data
 
-class LoginAPI(generics.GenericAPIView):
-    permission_classes = (permissions.AllowAny,)
+        data = {
+            "success": "Successfully registered proceed to login ",
+            "status": status.HTTP_200_OK,
+            "data":serialized_data
+        }
+        return Response(data, status=status.HTTP_201_CREATED)
 
-    def post(self, request, format=None):
-        serializer = AuthTokenSerializer(data=request.data)
+
+    @action(methods=['POST', "GET"], detail=False)
+    def login(self, request):
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        login(request, user)
-        return super(LoginAPI, self).post(request, format=None) 
+        user = get_and_authenticate_user(**serializer.validated_data)
+        serialized_data = serializers.AuthUserSerializer(user).data
+        data = {
+            "success": "Logged In sucesfully",
+            "status": status.HTTP_200_OK,
+            "data":serialized_data
+        }
+        return Response(data, status=status.HTTP_200_OK)
 
-class UserAPI(generics.RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated,]
-    serializer_class = UserSerializer
 
-    def get_object(self):
-        return self.request.user                
+    @action(methods=['POST', ], detail=False)
+    def logout(self, request):
+        logout(request)
+        data = {
+            "status":status.HTTP_200_OK,
+            'success':'Successfully logged out'}
+        return Response(data, status=status.HTTP_200_OK)
+
+
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
+    def password_change(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        request.user.set_password(serializer.validated_data.get('new_password'))
+        request.user.save()
+        res = {
+            "status": status.HTTP_204_NO_CONTENT,
+            "success": "Password has been changed"
+        }
+        return Response(res, status=status.HTTP_204_NO_CONTENT)
+
+
+    # dynamically select serializers 
+    def get_serializer_class(self):
+        if not isinstance(self.serializer_classes, dict):
+            raise ImproperlyConfigured("serializer_classes should be a dict mapping.")
+
+        if self.action in self.serializer_classes.keys():
+            return self.serializer_classes[self.action]
+        return super().get_serializer_class()
+           
