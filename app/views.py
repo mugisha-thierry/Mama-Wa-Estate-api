@@ -184,3 +184,8 @@ class ApiRoot(generics.GenericAPIView):
            
         })
         
+class StoresList(APIView):
+    def get(self, request, format=None):
+        all_stores = Store.objects.all()
+        serializers = StoreSerializer(all_stores, many=True)
+        return Response(serializers.data)
