@@ -15,7 +15,7 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 # Create your views here.
 
-class Estate(APIView):
+class EstateView(APIView):
     name = "estate"
     def get(self, request, format=None):
         all_estate = Estate.objects.all()
@@ -31,7 +31,7 @@ class Estate(APIView):
 
 
 
-class Category(APIView):
+class CategoryView(APIView):
     name = "category"
     def get(self, request, format=None):
         all_category = Category.objects.all()
@@ -67,12 +67,3 @@ class ApiRoot(generics.GenericAPIView):
             'estate': reverse(Estate.name, request=request),
         })
         
-# class LoginAPI(APIView):
-#     permission_classes = (permissions.AllowAny,)
-
-#     def post(self, request, format=None):
-#         serializer = AuthTokenSerializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         user = serializer.validated_data['user']
-#         login(request, user)
-#         return super(LoginAPI, self).post(request, format=None)
