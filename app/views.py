@@ -119,6 +119,7 @@ class AddToCartView(APIView):
                 cartproduct.save()
                 cart_obj.total += product_obj.selling_price
                 cart_obj.save()
+                return Response(status=HTTP_200_OK)
             # new item is added in cart
             else:
                 cartproduct = CartProduct.objects.create(
