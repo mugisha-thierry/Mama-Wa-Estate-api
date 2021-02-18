@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .serializer import EstateSerializer
 from .forms import StoreForm
 
@@ -188,7 +188,7 @@ class ApiRoot(generics.GenericAPIView):
         })
         
 class StoresList(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         all_stores = Store.objects.all()
         serializers = StoreSerializer(all_stores, many=True)
