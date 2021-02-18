@@ -183,6 +183,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
 class VendorsList(APIView):
     name = "vendors"
+    permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
         
         all_vendors = Vendor.objects.all()
@@ -190,7 +191,7 @@ class VendorsList(APIView):
         return Response(serializers.data)
     
     def post(self, request, format=None):
-        permission_classes = [IsAuthenticated]
+        
         serializers = VendorSerializer(data = request.data)
         if serializers.is_valid():
             serializers.save()

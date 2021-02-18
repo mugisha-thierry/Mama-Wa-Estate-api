@@ -69,7 +69,6 @@ MIDDLEWARE = [
 ]
 
 
-
 ROOT_URLCONF = 'mama_wa_estate.urls'
 
 TEMPLATES = [
