@@ -12,7 +12,7 @@ def create_user_account(username, email, password, first_name="",
         last_name=last_name, password=password, **extra_fields)
     return user
 
-def get_and_authenticate_user(email,username, password):
+def get_and_authenticate_user(username, password):
     # user = authenticate(username=email, password=password)
     user = authenticate(username=username, password=password)
     if user is None:

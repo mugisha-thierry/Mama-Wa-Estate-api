@@ -6,3 +6,4 @@ DB_USER="replace with user "
 DB_PASSWORD="replace with password"
 ALLOWED_HOSTS=''
 DISABLE_COLLECTSTATIC=1
+DATABASE_URL='postgresql://localhost/DB_NAME?user=DB_USER&password=DB_PASSWORD'
