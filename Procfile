@@ -1,0 +1,1 @@
+web: gunicorn mama_wa_estate.wsgi --log-file -
