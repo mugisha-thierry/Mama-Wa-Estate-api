@@ -228,8 +228,7 @@ def storeDelete(request, pk):
     return Response('Item successfully deleted')
 
 class ApiRoot(generics.GenericAPIView):
-    name = 'api-root'
-    def get(self, request, *args, **kwargs):
+Username￼    def get(self, request, *args, **kwargs):
         return Response({
             'vendors': reverse(VendorsList.name, request=request),
             'category_list': reverse(ListCategory.name, request=request),
