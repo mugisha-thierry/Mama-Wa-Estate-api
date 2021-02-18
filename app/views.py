@@ -36,60 +36,67 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 
 class ListCategory(generics.ListCreateAPIView):
+    name = "category"
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 class DetailCategory(generics.RetrieveUpdateDestroyAPIView):
+    name = "category"
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 class ListEstate(generics.ListCreateAPIView):
+    name = "estate"
     queryset = Estate.objects.all()
     serializer_class = EstateSerializer
 
 class DetailEstate(generics.RetrieveUpdateDestroyAPIView):
-    
+    name = "estate"
     queryset = Estate.objects.all()
     serializer_class = EstateSerializer
 
 class ListCart(generics.ListCreateAPIView):
+    name = "cart"
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
 
 class DetailCart(generics.RetrieveUpdateDestroyAPIView):
-    
+    name = "cart"
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
 
 class ListProduct(generics.ListCreateAPIView):
+    name = "product"
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
 class DetailProduct(generics.RetrieveUpdateDestroyAPIView):
-    
+    name = "product"
     queryset = Product.objects.all()
     serializer_class = ProductSerializer    
 
 
 class ListOrder(generics.ListCreateAPIView):
+    name = "order"
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
 class DetailOrder(generics.RetrieveUpdateDestroyAPIView):
-    
+    name = "order"
     queryset = Order.objects.all()
     serializer_class = OrderSerializer    
 
 
 
-class CategoryView(APIView):
-    name = "category"
-    def get(self, request, format=None):
-        all_category = Category.objects.all()
-        serializers =CategorySerializer(all_category, many=True)
-        return Response(serializers.data)
+# class CategoryView(APIView):
+#     name = "category"
+#     def get(self, request, format=None):
+#         all_category = Category.objects.all()
+#         serializers =CategorySerializer(all_category, many=True)
+#         return Response(serializers.data)
 
 class AddToCartView(APIView):
+    name = "add-to-cart"
     def post(self, request, *args, **kwargs):
         
         # get product id from requested url
@@ -132,8 +139,9 @@ class AddToCartView(APIView):
              
 
 class CheckoutView(APIView):
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    name = "checkout"
+    def get(self, request, format=None):
+        # context = super().get_context_data(**kwargs)
         cart_id = self.request.session.get("cart_id", None)
         if cart_id:
             cart_obj = Cart.objects.get(id=cart_id)
@@ -161,7 +169,17 @@ class ApiRoot(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         return Response({
             'vendors': reverse(VendorsList.name, request=request),
-            'category': reverse(Category.name, request=request),
-            'estate': reverse(Estate.name, request=request),
+            'category': reverse(ListCategory.name, request=request),
+            'category': reverse(DetailCategory.name, request=request),
+            'estate': reverse(ListEstate.name, request=request),
+            'estate': reverse(DetailEstate.name, request=request),
+            'cart': reverse(ListCart.name, request=request),
+            'cart': reverse(DetailCart.name, request=request),
+            'product': reverse(ListProduct.name, request=request),
+            'product': reverse(DetailProduct.name, request=request),
+            'order': reverse(ListOrder.name, request=request),
+            'order': reverse(DetailOrder.name, request=request),
+            'add-to-cart': reverse(AddToCartView.name, request=request),
+            'checkout': reverse(CheckoutView.name, request=request),
         })
         
