@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib.auth.models import User
+from rest_framework.reverse import reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
@@ -45,8 +47,7 @@ class VendorsList(APIView):
             serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    
+        
 
 class StoresList(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -54,16 +55,26 @@ class StoresList(APIView):
         all_stores = Store.objects.all()
         serializers = StoreSerializer(all_stores, many=True)
         return Response(serializers.data)
-
+    
     def post(self, request, format=None):
-        serializers = StoreSerializer(data.request)
+        serializers = StoreSerializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
-            return Response(serializers.data, status=status.HTTP_201_CREATED)
+            return Response(serializers.data,  status=status.HTTP_201_CREATED)
+
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def deleteStore(self, id):
-        store = Store.objects.get(id=id)
-        store.delete()
+    # Method checks if user is a vendor & allows them to make changes to store
+    def updateStore(self, request):
+        user  = request.user
+        print(user)
 
-    
+class ApiRoot(generics.GenericAPIView):
+    name = 'api-root'
+    def get(self, request, *args, **kwargs):
+        return Response({
+            'vendors': reverse(VendorsList.name, request=request),
+            'category': reverse(Category.name, request=request),
+            'estate': reverse(Estate.name, request=request),
+            'stores':reverse(StoresList.name, request=request)
+        })

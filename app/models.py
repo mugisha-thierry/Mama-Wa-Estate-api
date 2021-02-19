@@ -41,6 +41,8 @@ class Vendor(models.Model):
     password = models.CharField(max_length=30)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
+    is_active = models.BooleanField(blank=True)
+    is_staff  = models.BooleanField(blank=True)
   
 
     def __str__(self):
@@ -55,7 +57,7 @@ class Vendor(models.Model):
 class Store(models.Model):
     name = models.CharField(max_length=30)
     service = models.CharField(max_length=50)
-    vendor = models.ForeignKey(Vendor,on_delete=models.CASCADE)
+    # vendor = models.ForeignKey(Vendor,on_delete=models.CASCADE)
     location = models.CharField(max_length=40)
 
     def saveStore(self):
