@@ -70,10 +70,10 @@ class Store(models.Model):
 
 
 class Product(models.Model):
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
+    name = models.CharField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="products")
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="products" ,null=True, blank=True)
     marked_price = models.PositiveIntegerField()
     selling_price = models.PositiveIntegerField()
     description = models.TextField()
@@ -82,7 +82,7 @@ class Product(models.Model):
     view_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 
@@ -127,9 +127,6 @@ class Order(models.Model):
     shipping_address = models.CharField(max_length=200)
     mobile = models.CharField(max_length=10)
     email = models.EmailField(null=True, blank=True)
-    subtotal = models.PositiveIntegerField()
-    discount = models.PositiveIntegerField()
-    total = models.PositiveIntegerField()
     order_status = models.CharField(max_length=50, choices=ORDER_STATUS)
     created_at = models.DateTimeField(auto_now_add=True)
     payment_method = models.CharField(
@@ -139,7 +136,4 @@ class Order(models.Model):
 
     def __str__(self):
         return "Order: " + str(self.id)
-
-
-
 

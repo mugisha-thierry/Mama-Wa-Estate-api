@@ -9,7 +9,7 @@ from rest_framework import mixins, viewsets , generics, status
 
 from rest_framework import generics
 from django.contrib.auth.models import User
-from .models import Category, Estate, Cart, Product,CartProduct,Order
+from .models import Category, Estate, Cart, Product,CartProduct,Order,Vendor
 from .serializer import EstateSerializer,CategorySerializer,CartSerializer,ProductSerializer, OrderSerializer
 from rest_framework.response import Response
 from rest_framework import status
@@ -17,22 +17,16 @@ from rest_framework import serializers
 import uuid
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from django.forms.models import model_to_dict
+from .forms import *
+from django.db.models import Q
 
 
 from django.contrib.auth import login
 
 from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-# from knox.views import LoginView as KnoxLoginView
 
-# Create your views here.
-
-# class Estate(APIView):
-#     name = "estate"
-#     def get(self, request, format=None):
-#         all_estate = Estate.objects.all()
-#         serializers = EstateSerializer(all_estate, many=True)
-#         return Response(serializers.data)
 
 
 class ListCategory(generics.ListCreateAPIView):
@@ -81,6 +75,9 @@ class ListOrder(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
+    
+
+
 class DetailOrder(generics.RetrieveUpdateDestroyAPIView):
     name = "order"
     queryset = Order.objects.all()
@@ -88,70 +85,56 @@ class DetailOrder(generics.RetrieveUpdateDestroyAPIView):
 
 
 
-# class CategoryView(APIView):
-#     name = "category"
-#     def get(self, request, format=None):
-#         all_category = Category.objects.all()
-#         serializers =CategorySerializer(all_category, many=True)
-#         return Response(serializers.data)
 
-class AddToCartView(APIView):
-    name = "add-to-cart"
-    def post(self, request, *args, **kwargs):
+
+# class AddToCartView(APIView):
+#     name = "add-to-cart"
+#     def get(self, request,reverse, *args, **kwargs):
+     
         
-        # get product id from requested url
-        product_id = self.kwargs['pro_id']
-        # get product
-        product_obj = Product.objects.get(id=product_id)
+#         # get product id from requested url
+#         product_id = self.kwargs['pro_id']
+#         # get product
+#         product_obj = Product.objects.get(id=product_id)
 
-        # check if cart exists
-        cart_id = self.request.session.get("cart_id", None)
-        if cart_id:
-            cart_obj = Cart.objects.get(id=cart_id)
-            this_product_in_cart = cart_obj.cartproduct_set.filter(
-                product=product_obj)
+#         # check if cart exists
+#         cart_id = self.request.session.get("cart_id", None)
+#         if cart_id:
+#             cart_obj = Cart.objects.get(id=cart_id)
+#             this_product_in_cart = cart_obj.cartproduct_set.filter(
+#                 product=product_obj)
 
-            # item already exists in cart
-            if this_product_in_cart.exists():
-                cartproduct = this_product_in_cart.last()
-                cartproduct.quantity += 1
-                cartproduct.subtotal += product_obj.selling_price
-                cartproduct.save()
-                cart_obj.total += product_obj.selling_price
-                cart_obj.save()
-                return Response(status=HTTP_200_OK)
-            # new item is added in cart
-            else:
-                cartproduct = CartProduct.objects.create(
-                    cart=cart_obj, product=product_obj, rate=product_obj.selling_price, quantity=1, subtotal=product_obj.selling_price)
-                cart_obj.total += product_obj.selling_price
-                cart_obj.save()
+#             # item already exists in cart
+#             if this_product_in_cart.exists():
+#                 cartproduct = this_product_in_cart.last()
+#                 cartproduct.quantity += 1
+#                 cartproduct.subtotal += product_obj.selling_price
+#                 cartproduct.save()
+#                 cart_obj.total += product_obj.selling_price
+#                 cart_obj.save()
+#                 return Response(status=HTTP_200_OK)
+#             # new item is added in cart
+#             else:
+#                 cartproduct = CartProduct.objects.create(
+#                     cart=cart_obj, product=product_obj, rate=product_obj.selling_price, quantity=1, subtotal=product_obj.selling_price)
+#                 cart_obj.total += product_obj.selling_price
+#                 cart_obj.save()
 
-        else:
-            cart_obj = Cart.objects.create(total=0)
-            self.request.session['cart_id'] = cart_obj.id
-            cartproduct = CartProduct.objects.create(
-                cart=cart_obj, product=product_obj, rate=product_obj.selling_price, quantity=1, subtotal=product_obj.selling_price)
-            cart_obj.total += product_obj.selling_price
-            cart_obj.save()
-
-            return Response(status=HTTP_200_OK)
-
+#         else:
+#             cart_obj = Cart.objects.create(total=0)
+#             self.request.session['cart_id'] = cart_obj.id
+#             cartproduct = CartProduct.objects.create(
+#                 cart=cart_obj, product=product_obj, rate=product_obj.selling_price, quantity=1, subtotal=product_obj.selling_price)
+#             cart_obj.total += product_obj.selling_price
+#             cart_obj.save()
+#             context['cart'] = cart
+        
+#             return Response({'msg':'Added to Successfully'},cart_obj,status=HTTP_200_OK)
+    
+     
              
 
-class CheckoutView(APIView):
-    name = "checkout"
-    def get(self, request, format=None):
-        # context = super().get_context_data(**kwargs)
-        cart_id = self.request.session.get("cart_id", None)
-        if cart_id:
-            cart_obj = Cart.objects.get(id=cart_id)
-        else:
-            cart_obj = None
-        
-        return Response(status=HTTP_200_OK)
 
-           
 
 class PostViewSet(viewsets.ModelViewSet):
     name = "product"
@@ -170,17 +153,17 @@ class ApiRoot(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         return Response({
             'vendors': reverse(VendorsList.name, request=request),
-            'category': reverse(ListCategory.name, request=request),
-            'category': reverse(DetailCategory.name, request=request),
-            'estate': reverse(ListEstate.name, request=request),
-            'estate': reverse(DetailEstate.name, request=request),
-            'cart': reverse(ListCart.name, request=request),
-            'cart': reverse(DetailCart.name, request=request),
-            'product': reverse(ListProduct.name, request=request),
-            'product': reverse(DetailProduct.name, request=request),
-            'order': reverse(ListOrder.name, request=request),
-            'order': reverse(DetailOrder.name, request=request),
-            'add-to-cart': reverse(AddToCartView.name, request=request),
-            'checkout': reverse(CheckoutView.name, request=request),
+            'category_list': reverse(ListCategory.name, request=request),
+            'category_detail': reverse(DetailCategory.name, request=request),
+            'estate_list': reverse(ListEstate.name, request=request),
+            'estate_detail': reverse(DetailEstate.name, request=request),
+            'cart_list': reverse(ListCart.name, request=request),
+            'cart_detail': reverse(DetailCart.name, request=request),
+            'product_list': reverse(ListProduct.name, request=request),
+            'product_detail': reverse(DetailProduct.name, request=request),
+            'checkout_list': reverse(ListOrder.name, request=request),
+            'checkout_detail': reverse(DetailOrder.name, request=request),
+            # 'add-to-cart': reverse(AddToCartView.name, request=request),
+            # 'checkout': reverse(CheckoutView.name, request=request),
         })
         
