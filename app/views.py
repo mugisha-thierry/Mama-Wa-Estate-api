@@ -147,7 +147,7 @@ class PostViewSet(viewsets.ModelViewSet):
 class VendorsList(APIView):
     name = "vendors"
     def get(self, request, format=None):
-        permission_classes = [IsAuthenticated]
+        
         all_vendors = Vendor.objects.all()
         serializers = VendorSerializer(all_vendors, many=True)
         return Response(serializers.data)

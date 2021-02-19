@@ -40,7 +40,7 @@ class Vendor(models.Model):
     '''
     Model creates user instances of vendors
     '''
-    username = models.CharField(max_length=40)
+    username = models.CharField(max_length=30)
     email = models.EmailField()
     password = models.CharField(max_length=200)
     first_name = models.CharField(max_length=30)
@@ -49,7 +49,7 @@ class Vendor(models.Model):
   
 
     def __str__(self):
-        return self.name
+        return self.username
 
     def saveVendor(self):
         self.save()
