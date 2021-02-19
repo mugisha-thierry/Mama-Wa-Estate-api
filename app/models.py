@@ -13,14 +13,21 @@ class Estate(models.Model):
     description = models.TextField()
    
 
-    def create_neighbourhood(self):
+    def create_estate(self):
         self.save()
 
-    def delete_neighbourhood(self):
+    def delete_estate(self):
         self.delete()
 
     def __str__(self):
         return f"{self.name}"
+
+class Category(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.title
 
 
 # Create a profile for the vendors
@@ -29,19 +36,15 @@ class Vendor(models.Model):
     '''
     Model creates user instances of vendors
     '''
-    username = models.CharField(max_length=40)
+    username = models.CharField(max_length=30)
     email = models.EmailField()
-    password = models.CharField(max_length=20)
+    password = models.CharField(max_length=30)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    # contact = models.IntegerField()
-    # location = models.CharField(max_length=40)
-    # product_type = models.CharField(max_length=20)
-    # product_image = models.ImageField(upload_to = 'products/')
   
 
     def __str__(self):
-        return self.name
+        return self.username
 
     def saveVendor(self):
         self.save()
