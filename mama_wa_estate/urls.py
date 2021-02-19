@@ -1,3 +1,4 @@
+
 """mama_wa_estate URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -16,13 +17,21 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 from django.urls import path
-from django.contrib.auth import views as auth_views
-from django.conf import settings
-from django.conf.urls.static import static
+from rest_framework.authtoken.views import obtain_auth_token
 
+from app.views import ApiRoot
+
+
+# Wire up our API using automatic URL routing.
+# Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    url('admin/', admin.site.urls),
-    url('', include('app.urls')),
-    url('',include('app.url')),
-    path('api-auth/', include('rest_framework.urls')),
+    path('admin/', admin.site.urls),
+    # url('', include('app.urls')),
+    # path('', include(router.urls)),
+    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('api/auth/', include('user.urls')),
+    path('api/', include("app.urls")),
+    path('', ApiRoot.as_view(), name="ApiRoot.name"),
 ]
+

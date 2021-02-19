@@ -3,20 +3,18 @@ from django.conf.urls.static import static
 from django.conf.urls import url,include
 from django.urls import path
 from rest_framework.routers import SimpleRouter
-from .views import PostViewSet, StoreForm
 
 from . import views
 
-urlpatterns=[
-    url(r'^api/vendors/$', views.VendorsList.as_view()),
-    url(r'^api/stores/$', views.StoresList.as_view()),
-    
-]
-
 router = SimpleRouter()
-router.register('', PostViewSet, basename='posts')
-urlpatterns = router.urls
+router.register('products', views.PostViewSet, basename='posts')
 
-if settings.DEBUG:
-    urlpatterns+= static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+urlpatterns=[
+    path('estate/', views.EstateView.as_view(), name='estate'),
+    path('vendors/', views.VendorsList.as_view(), name='vendors'),
+    path('category/', views.CategoryView.as_view(), name='category'),
+    path('stores/', views.StoresList.as_view(), name='stores'),
+    
+    path('', include(router.urls)),
 
+]

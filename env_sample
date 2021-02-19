@@ -1,0 +1,9 @@
+SECRET_KEY='-jc2^^pnu%zb3s9tp6@kq8=5^doa*%t#s430+lv7h6uq__$y8b'
+DEBUG=True
+MODE='dev'
+DB_NAME="replace with DB name"
+DB_USER="replace with user "
+DB_PASSWORD="replace with password"
+ALLOWED_HOSTS=''
+DISABLE_COLLECTSTATIC=1
+DATABASE_URL='postgresql://localhost/DB_NAME?user=DB_USER&password=DB_PASSWORD'
