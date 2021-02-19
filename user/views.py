@@ -4,6 +4,11 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from .models import Profile
+from django.http import Http404
+from  .serializers import ProfileSerializer
+from rest_framework.views import APIView
+
 
 
 #local imports
@@ -80,4 +85,27 @@ class AuthViewSet(viewsets.GenericViewSet):
         if self.action in self.serializer_classes.keys():
             return self.serializer_classes[self.action]
         return super().get_serializer_class()
-           
+
+class ProfileList(APIView):
+    """
+    List all profile, or create a new snippet.
+    """
+    def get(self, request, format=None):
+        profile = Profile.objects.all()
+        serializer = ProfileSerializer(profile, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = ProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+
+class ProfileList(APIView):
+
+    @classmethod
+    def get_extra_actions(cls):
+        return []
+
+

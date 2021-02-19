@@ -63,7 +63,7 @@ class ApiRoot(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         return Response({
             'vendors': reverse(VendorsList.name, request=request),
-            'category': reverse(Category.name, request=request),
-            'estate': reverse(Estate.name, request=request),
+            'category': reverse(CategoryView.name, request=request),
+            'estate': reverse(EstateView.name, request=request),
         })
         

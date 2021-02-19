@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth.models import BaseUserManager
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers
+from .models import Profile
 
 User = get_user_model()
 
@@ -58,3 +59,11 @@ class PasswordChangeSerializer(serializers.Serializer):
     def validate_new_password(self, value):
         password_validation.validate_password(value)
         return value
+
+class ProfileSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Profile
+        fields = ['user', 'image', 'bio'] 
+
+ 
