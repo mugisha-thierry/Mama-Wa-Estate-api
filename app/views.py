@@ -93,6 +93,29 @@ class DetailOrder(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer    
 
+    def post(self, request, format=None):
+        serializers =  EstateSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)        
+
+
+
+class CategoryView(APIView):
+    name = "category"
+    def get(self, request, format=None):
+        all_category = Category.objects.all()
+        serializers =CategorySerializer(all_category, many=True)
+        return Response(serializers.data)
+
+    def post(self, request, format=None):
+        serializers =  CategorySerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)        
+
 
 class AddToCartView(APIView):
     name = "add-to-cart"
@@ -227,6 +250,7 @@ class ApiRoot(generics.GenericAPIView):
         })
         
 class StoresList(APIView):
+    name = 'stores'
     permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         all_stores = Store.objects.all()
