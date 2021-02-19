@@ -19,6 +19,7 @@ from .serializer import MerchSerializer, VendorSerializer, StoreSerializer
 # Create your views here.
 
 
+
 class Estate(APIView):
     def get(self, request, format=None):
         all_estate = Estate.objects.all()
@@ -45,6 +46,8 @@ class VendorsList(APIView):
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    
+
 class StoresList(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
@@ -58,3 +61,9 @@ class StoresList(APIView):
             serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def deleteStore(self, id):
+        store = Store.objects.get(id=id)
+        store.delete()
+
+    
