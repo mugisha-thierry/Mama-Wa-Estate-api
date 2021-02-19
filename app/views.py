@@ -15,30 +15,24 @@ from .forms import StoreForm
 from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 
-from .serializer import EstateSerializer,CategorySerializer,VendorSerializer
-from rest_framework import mixins, viewsets , generics, status
-
-
-from rest_framework import generics
-from django.contrib.auth.models import User
-from .models import Category, Estate, Cart, Product,Order,Vendor,CartProduct
-from .serializer import EstateSerializer,CategorySerializer,CartSerializer,ProductSerializer, OrderSerializer,CartProductSerializer
+from rest_framework import mixins, viewsets , generics
+from .models import ProductMerch, Estate, Vendor, Store, Category
+from .serializer import MerchSerializer, VendorSerializer, StoreSerializer
+from rest_framework.reverse import reverse
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import serializers
-import uuid
 from rest_framework.views import APIView
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
-from django.forms.models import model_to_dict
-from .forms import *
-from django.db.models import Q
+from .models import  Estate,ProductMerch,Vendor
+from .serializer import EstateSerializer,CategorySerializer,MerchSerializer,VendorSerializer
+from rest_framework import mixins, viewsets , generics, status
 
 
 from django.contrib.auth import login
 
 from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+# from knox.views import LoginView as KnoxLoginView
 
+# Create your views here.
 
 class ListCategory(generics.ListCreateAPIView):
     name = "category"
@@ -104,6 +98,29 @@ class DetailOrder(generics.RetrieveUpdateDestroyAPIView):
     name = "order"
     queryset = Order.objects.all()
     serializer_class = OrderSerializer    
+
+    def post(self, request, format=None):
+        serializers =  EstateSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)        
+
+
+
+class CategoryView(APIView):
+    name = "category"
+    def get(self, request, format=None):
+        all_category = Category.objects.all()
+        serializers =CategorySerializer(all_category, many=True)
+        return Response(serializers.data)
+
+    def post(self, request, format=None):
+        serializers =  CategorySerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)        
 
 
 
@@ -199,6 +216,7 @@ class ApiRoot(generics.GenericAPIView):
         })
         
 class StoresList(APIView):
+    name = 'stores'
     permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         all_stores = Store.objects.all()
