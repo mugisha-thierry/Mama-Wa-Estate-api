@@ -87,7 +87,7 @@ class Product(models.Model):
 
 
 class Cart(models.Model):
-    # customer = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
+    # User= models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
     total = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
