@@ -42,12 +42,32 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Vendor',
+            name='ProductMerch',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=40)),
+                ('title', models.CharField(blank=True, max_length=200, null=True)),
+                ('description', models.CharField(blank=True, max_length=200, null=True)),
+                ('price', models.DecimalField(decimal_places=2, max_digits=20)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Vendor',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('username', models.CharField(max_length=30)),
                 ('email', models.EmailField(max_length=254)),
-                ('contact', models.IntegerField()),
+                ('password', models.CharField(max_length=30)),
+                ('first_name', models.CharField(max_length=30)),
+                ('last_name', models.CharField(max_length=30)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Store',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=30)),
+                ('service', models.CharField(max_length=50)),
                 ('location', models.CharField(max_length=40)),
                 ('product_type', models.CharField(max_length=20)),
                 ('product_image', models.ImageField(upload_to='products/')),
