@@ -265,6 +265,8 @@ class StoresList(APIView):
 
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+
 @api_view(['GET'])
 def storeDetail(request, pk):
     name = 'store-detail'
