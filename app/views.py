@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 
 from .serializer import EstateSerializer,CategorySerializer,VendorSerializer
 from rest_framework import mixins, viewsets , generics, status
@@ -162,12 +163,66 @@ class VendorsList(APIView):
         all_vendors = Vendor.objects.all()
         serializers = VendorSerializer(all_vendors, many=True)
         return Response(serializers.data)
+<<<<<<< HEAD
+=======
+    
+    def post(self, request, format=None):
+        permission_classes = [IsAuthenticated]
+        serializers = VendorSerializer(data = request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class StoresList(APIView):
+    name = 'stores'
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    def get(self, request, format=None):
+        all_stores = Store.objects.all()
+        serializers = StoreSerializer(all_stores, many=True)
+        return Response(serializers.data)
+    
+    def post(self, request, format=None):
+        serializers = StoreSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data,  status=status.HTTP_201_CREATED)
+
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def storeDetail(request, pk):
+    name = 'store-detail'
+    store = Store.objects.get(id=pk)
+    serializer = StoreSerializer(store, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def storeUpdate(request, pk):
+    name = 'store-update'
+    permission_classes = [IsAuthenticated]
+    store = Store.objects.get(id=pk)
+    serializer = StoreSerializer(instance=store, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+@api_view(['DELETE','GET'])
+def storeDelete(request, pk):
+    name = 'store-delete'
+    permission_classes = [IsAuthenticated]
+    store = Store.objects.get(id=pk)
+    store.delete()
+    return Response('Item successfully deleted')
+>>>>>>> Addded crud for stores
 
 class ApiRoot(generics.GenericAPIView):
     name = 'api-root'
     def get(self, request, *args, **kwargs):
         return Response({
             'vendors': reverse(VendorsList.name, request=request),
+<<<<<<< HEAD
             'category_list': reverse(ListCategory.name, request=request),
             'category_detail': reverse(DetailCategory.name, request=request),
             'estate_list': reverse(ListEstate.name, request=request),
@@ -182,5 +237,11 @@ class ApiRoot(generics.GenericAPIView):
             # 'cartproduct_detail': reverse(DetailCartProduct.name, request=request),
             # 'add-to-cart': reverse(AddToCartView.name, request=request),
            
+=======
+            'category': reverse(CategoryView.name, request=request),
+            'estate': reverse(EstateView.name, request=request),
+            'stores':reverse(StoresList.name, request=request),
+            
+>>>>>>> Addded crud for stores
         })
         
