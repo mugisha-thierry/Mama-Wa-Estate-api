@@ -14,6 +14,7 @@ urlpatterns = [
     path('profile/', views.ProfileList.as_view(), name='profile'),
     # path('register/',views.RegisterAPI.as_view(), name='register'),
     
+    
 ]
 
 
