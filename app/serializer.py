@@ -35,7 +35,7 @@ class VendorSerializer(serializers.ModelSerializer):
 class StoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Store
-        fields = ('name', 'service')
+        fields = ('name', 'service','location')
         
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):

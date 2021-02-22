@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -102,10 +103,30 @@ class StoresList(APIView):
 
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # Method checks if user is a vendor & allows them to make changes to store
-    def updateStore(self, request):
-        user  = request.user
-        print(user)
+@api_view(['GET'])
+def storeDetail(request, pk):
+    name = 'store-detail'
+    store = Store.objects.get(id=pk)
+    serializer = StoreSerializer(store, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def storeUpdate(request, pk):
+    name = 'store-update'
+    permission_classes = [IsAuthenticated]
+    store = Store.objects.get(id=pk)
+    serializer = StoreSerializer(instance=store, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+@api_view(['DELETE','GET'])
+def storeDelete(request, pk):
+    name = 'store-delete'
+    permission_classes = [IsAuthenticated]
+    store = Store.objects.get(id=pk)
+    store.delete()
+    return Response('Item successfully deleted')
 
 class ApiRoot(generics.GenericAPIView):
     name = 'api-root'
@@ -114,5 +135,6 @@ class ApiRoot(generics.GenericAPIView):
             'vendors': reverse(VendorsList.name, request=request),
             'category': reverse(CategoryView.name, request=request),
             'estate': reverse(EstateView.name, request=request),
-            'stores':reverse(StoresList.name, request=request)
+            'stores':reverse(StoresList.name, request=request),
+            
         })
