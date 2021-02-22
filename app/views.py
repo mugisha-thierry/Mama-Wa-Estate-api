@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
+from django.contrib.auth.forms import UserCreationForm
+
 
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -102,6 +104,8 @@ class StoresList(APIView):
             return Response(serializers.data,  status=status.HTTP_201_CREATED)
 
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 @api_view(['GET'])
 def storeDetail(request, pk):
