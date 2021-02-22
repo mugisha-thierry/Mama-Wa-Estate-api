@@ -12,7 +12,10 @@ router.register('products', views.PostViewSet, basename='posts')
 
 urlpatterns=[
     
-    path('vendors/', views.VendorsList.as_view(), name='vendors'),
+    path('stores/', views.StoresList.as_view(), name='stores'),
+    path('store-detail/<int:pk>/', views.storeDetail, name='store-detail'),
+    path('store-update/<int:pk>/', views.storeUpdate, name='store-update'),
+    path('store-delete/<int:pk>/', views.storeDelete, name='store-delete'),
     path('', include(router.urls)),
     path('vendors/', views.VendorsList.as_view(), name='vendors'),
     path('category/', ListCategory.as_view(), name='category'),
