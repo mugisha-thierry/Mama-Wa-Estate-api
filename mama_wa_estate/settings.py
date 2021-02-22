@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     # local apps
     'user',
     'app',
-    
+    'rest_framework',
+    'django-registration',
 ]
 
 MIDDLEWARE = [
