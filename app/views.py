@@ -3,6 +3,8 @@ from rest_framework.reverse import reverse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
+from django.contrib.auth.forms import UserCreationForm
+
 
 from .serializer import EstateSerializer,CategorySerializer,VendorSerializer
 from rest_framework import mixins, viewsets , generics, status
@@ -190,6 +192,8 @@ class StoresList(APIView):
             return Response(serializers.data,  status=status.HTTP_201_CREATED)
 
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 @api_view(['GET'])
 def storeDetail(request, pk):
