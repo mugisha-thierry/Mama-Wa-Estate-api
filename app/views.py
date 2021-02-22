@@ -256,3 +256,47 @@ class StoresList(APIView):
         all_stores = Store.objects.all()
         serializers = StoreSerializer(all_stores, many=True)
         return Response(serializers.data)
+    
+    def post(self, request, format=None):
+        serializers = StoreSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data,  status=status.HTTP_201_CREATED)
+
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def storeDetail(request, pk):
+    name = 'store-detail'
+    store = Store.objects.get(id=pk)
+    serializer = StoreSerializer(store, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def storeUpdate(request, pk):
+    name = 'store-update'
+    permission_classes = [IsAuthenticated]
+    store = Store.objects.get(id=pk)
+    serializer = StoreSerializer(instance=store, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+@api_view(['DELETE','GET'])
+def storeDelete(request, pk):
+    name = 'store-delete'
+    permission_classes = [IsAuthenticated]
+    store = Store.objects.get(id=pk)
+    store.delete()
+    return Response('Item successfully deleted')
+
+class ApiRoot(generics.GenericAPIView):
+    name = 'api-root'
+    def get(self, request, *args, **kwargs):
+        return Response({
+            'vendors': reverse(VendorsList.name, request=request),
+            'category': reverse(CategoryView.name, request=request),
+            'estate': reverse(EstateView.name, request=request),
+            'stores':reverse(StoresList.name, request=request),
+            
+        })
