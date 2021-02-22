@@ -52,8 +52,7 @@ INSTALLED_APPS = [
     # local apps
     'user',
     'app',
-    'rest_framework',
-    'django-registration',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +66,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+
 
 ROOT_URLCONF = 'mama_wa_estate.urls'
 
@@ -179,6 +180,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         # 'knox.auth.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+        
     ]
 }
 
