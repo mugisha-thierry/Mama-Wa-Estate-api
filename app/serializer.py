@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 
 from .models import Estate, Category, ProductMerch,Vendor,Store
-from django.contrib.auth.models import User
+
 
 
 

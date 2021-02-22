@@ -1,8 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.contrib.auth.models import User
-from rest_framework.reverse import reverse
-from django.contrib.auth.forms import UserCreationForm
+
 from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -19,11 +16,11 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 from rest_framework import mixins, viewsets , generics
 from .models import ProductMerch, Estate, Vendor, Store, Category
-from .serializer import MerchSerializer, VendorSerializer, StoreSerializer
+
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import  Estate,ProductMerch,Vendor
+
 from .serializer import EstateSerializer,CategorySerializer,MerchSerializer,VendorSerializer
 from rest_framework import mixins, viewsets , generics, status
 
