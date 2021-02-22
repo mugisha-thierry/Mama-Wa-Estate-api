@@ -53,14 +53,7 @@ INSTALLED_APPS = [
     # local apps
     'user',
     'app',
-    
-    
-    # 'bootstrap4',
-    
-
-    # local apps
-    
-    
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -75,12 +68,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-        
-    ]
-}
+
 
 ROOT_URLCONF = 'mama_wa_estate.urls'
 
@@ -193,6 +181,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         # 'knox.auth.TokenAuthentication',
+    ]
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+        
     ]
 }
 
