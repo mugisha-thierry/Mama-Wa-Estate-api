@@ -5,31 +5,29 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from django.contrib.auth.forms import UserCreationForm
-
-
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from .serializer import EstateSerializer
+
 from .forms import StoreForm
-from rest_framework import permissions
+
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 from rest_framework import mixins, viewsets , generics
 from .models import ProductMerch, Estate, Vendor, Store, Category
 
 from rest_framework.reverse import reverse
-from rest_framework.response import Response
-from rest_framework.views import APIView
+
 
 from .serializer import EstateSerializer,CategorySerializer,MerchSerializer,VendorSerializer
 from rest_framework import mixins, viewsets , generics, status
 
 
-from django.contrib.auth import login
-
 from rest_framework import permissions
-from rest_framework.authtoken.serializers import AuthTokenSerializer
+
 # from knox.views import LoginView as KnoxLoginView
+
+# Create your views here.
+from django.contrib.auth import login
 
 # Create your views here.
 

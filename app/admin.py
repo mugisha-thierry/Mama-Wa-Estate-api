@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 
-from .models import Vendor,Estate,Store,Category
+from .models import Vendor,Estate,Category,Store
 from .models import ProductMerch
 
 # Register your models here.
