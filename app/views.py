@@ -165,8 +165,6 @@ class VendorsList(APIView):
         all_vendors = Vendor.objects.all()
         serializers = VendorSerializer(all_vendors, many=True)
         return Response(serializers.data)
-<<<<<<< HEAD
-=======
     
     def post(self, request, format=None):
         permission_classes = [IsAuthenticated]
@@ -219,14 +217,12 @@ def storeDelete(request, pk):
     store = Store.objects.get(id=pk)
     store.delete()
     return Response('Item successfully deleted')
->>>>>>> Addded crud for stores
 
 class ApiRoot(generics.GenericAPIView):
     name = 'api-root'
     def get(self, request, *args, **kwargs):
         return Response({
             'vendors': reverse(VendorsList.name, request=request),
-<<<<<<< HEAD
             'category_list': reverse(ListCategory.name, request=request),
             'category_detail': reverse(DetailCategory.name, request=request),
             'estate_list': reverse(ListEstate.name, request=request),
@@ -240,12 +236,7 @@ class ApiRoot(generics.GenericAPIView):
             # 'cartproduct_list': reverse(ListCartProduct.name, request=request),
             # 'cartproduct_detail': reverse(DetailCartProduct.name, request=request),
             # 'add-to-cart': reverse(AddToCartView.name, request=request),
-           
-=======
-            'category': reverse(CategoryView.name, request=request),
-            'estate': reverse(EstateView.name, request=request),
             'stores':reverse(StoresList.name, request=request),
             
->>>>>>> Addded crud for stores
         })
         

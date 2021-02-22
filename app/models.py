@@ -42,10 +42,10 @@ class Vendor(models.Model):
     '''
     name = models.CharField(max_length=40)
     email = models.EmailField()
-    contact = models.IntegerField()
-    location = models.CharField(max_length=40)
-    product_type = models.CharField(max_length=20)
-    product_image = models.ImageField(upload_to = 'products/')
+    password = models.CharField(max_length=200)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    
   
 
     def __str__(self):
