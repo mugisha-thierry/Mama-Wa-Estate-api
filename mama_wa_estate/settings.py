@@ -46,13 +46,12 @@ INSTALLED_APPS = [
     # third party libraries
     'rest_framework',
     'rest_framework.authtoken',
-    # 'bootstrap4',
+    'bootstrap4',
     'corsheaders',
 
     # local apps
     'user',
     'app',
-    
 ]
 
 MIDDLEWARE = [

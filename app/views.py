@@ -1,41 +1,31 @@
+import uuid
 from django.shortcuts import render
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from django.contrib.auth.forms import UserCreationForm
-
-
-from .serializer import EstateSerializer,CategorySerializer,VendorSerializer
-from rest_framework import mixins, viewsets , generics, status
-
-
-from rest_framework import generics
-from django.contrib.auth.models import User
-from .models import Category, Estate, Cart, Product,Order,Vendor,CartProduct
-from .serializer import EstateSerializer,CategorySerializer,CartSerializer,ProductSerializer, OrderSerializer,CartProductSerializer
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework import serializers
-import uuid
+from rest_framework import mixins, viewsets , generics, status
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework import permissions
+from django.contrib.auth.models import User
 from django.forms.models import model_to_dict
-from .forms import *
 from django.db.models import Q
 
 
-from django.contrib.auth import login
-
-from rest_framework import permissions
-from rest_framework.authtoken.serializers import AuthTokenSerializer
-
-
-
-
-
-
-
+from .models import Category, Estate, Cart, Product,Order,Vendor,CartProduct, Store
+from .serializer import (
+    EstateSerializer,
+    CategorySerializer,
+    CartSerializer,
+    ProductSerializer, 
+    OrderSerializer,
+    CartProductSerializer,
+    VendorSerializer,
+    StoreSerializer
+    )
+from .forms import *
+# from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 class ListCategory(generics.ListCreateAPIView):
     name = "category"
@@ -100,15 +90,10 @@ class DetailOrder(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = OrderSerializer    
 
 
-
-
-
 class AddToCartView(APIView):
     name = "add-to-cart"
     
     def post(self, request, *args, **kwargs):    
-        
-   
         
         # get product id from requested url
         product_id = self.kwargs['pro_id']
@@ -149,10 +134,6 @@ class AddToCartView(APIView):
         
         return Response({'Added  Successfully'},status=HTTP_200_OK)
     
-     
-             
-
-
 
 class PostViewSet(viewsets.ModelViewSet):
     name = "product"
@@ -177,7 +158,7 @@ class VendorsList(APIView):
 
 class StoresList(APIView):
     name = 'stores'
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         all_stores = Store.objects.all()
         serializers = StoreSerializer(all_stores, many=True)
@@ -203,7 +184,7 @@ def storeDetail(request, pk):
 @api_view(['POST'])
 def storeUpdate(request, pk):
     name = 'store-update'
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     store = Store.objects.get(id=pk)
     serializer = StoreSerializer(instance=store, data=request.data)
     if serializer.is_valid():
@@ -213,7 +194,7 @@ def storeUpdate(request, pk):
 @api_view(['DELETE','GET'])
 def storeDelete(request, pk):
     name = 'store-delete'
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     store = Store.objects.get(id=pk)
     store.delete()
     return Response('Item successfully deleted')
