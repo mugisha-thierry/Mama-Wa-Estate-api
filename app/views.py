@@ -101,7 +101,6 @@ class DetailOrder(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)        
 
 
-
 class CategoryView(APIView):
     name = "category"
     def get(self, request, format=None):
@@ -264,7 +263,6 @@ class StoresList(APIView):
             return Response(serializers.data,  status=status.HTTP_201_CREATED)
 
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 @api_view(['GET'])
