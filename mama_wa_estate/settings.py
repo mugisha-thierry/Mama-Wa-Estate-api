@@ -15,6 +15,7 @@ import dj_database_url
 
 from pathlib import Path
 from decouple import config,Csv
+import cloudinary.uploader
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -188,3 +189,9 @@ ACCOUNT_USERNAME_REQUIRED = False
 # https://warehouse.python.org/project/whitenoise/
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+cloudinary.config(
+  cloud_name = "di4pd4yxp",
+  api_key = "865599825291137",
+  api_secret = "3-k9A1NISwjplnmUpyDdaNcEHfU"
+)

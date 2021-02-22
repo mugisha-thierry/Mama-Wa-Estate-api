@@ -3,6 +3,9 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 import datetime as dt
 from django.contrib.auth.models import User
+import cloudinary
+from cloudinary.models import CloudinaryField
+
 
 # Create your models here.
 
