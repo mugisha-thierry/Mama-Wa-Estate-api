@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from .models import Estate,Category,Cart,Product,CartProduct
+from .models import Estate,Category,Cart,Product, CartProduct
 
 from .models import Vendor,Estate,Category,Store,Order
 
