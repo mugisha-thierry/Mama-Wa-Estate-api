@@ -109,7 +109,6 @@ class DetailOrder(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)        
 
 
-
 class CategoryView(APIView):
     name = "category"
     def get(self, request, format=None):
@@ -125,16 +124,10 @@ class CategoryView(APIView):
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)        
 
 
-
-
-
 class AddToCartView(APIView):
     name = "add-to-cart"
     
-    def post(self, request, *args, **kwargs):    
-        
-   
-        
+    def post(self, request, *args, **kwargs):          
         # get product id from requested url
         product_id = self.kwargs['pro_id']
         # get product
@@ -233,7 +226,6 @@ class StoresList(APIView):
             return Response(serializers.data,  status=status.HTTP_201_CREATED)
 
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 @api_view(['GET'])
