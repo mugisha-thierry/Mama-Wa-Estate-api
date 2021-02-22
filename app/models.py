@@ -3,8 +3,12 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 import datetime as dt
 from django.contrib.auth.models import User
+from django.conf import settings
 
 # Create your models here.
+
+
+
 
 class Estate(models.Model):
     name  = models.CharField(max_length=90)
@@ -87,9 +91,10 @@ class Product(models.Model):
 
 
 class Cart(models.Model):
-    # User= models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,null=True, blank=True)
     total = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    
 
     def __str__(self):
         return "Cart: " + str(self.id)

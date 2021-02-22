@@ -9,8 +9,8 @@ from rest_framework import mixins, viewsets , generics, status
 
 from rest_framework import generics
 from django.contrib.auth.models import User
-from .models import Category, Estate, Cart, Product,CartProduct,Order,Vendor
-from .serializer import EstateSerializer,CategorySerializer,CartSerializer,ProductSerializer, OrderSerializer
+from .models import Category, Estate, Cart, Product,Order,Vendor,CartProduct
+from .serializer import EstateSerializer,CategorySerializer,CartSerializer,ProductSerializer, OrderSerializer,CartProductSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import serializers
@@ -26,6 +26,11 @@ from django.contrib.auth import login
 
 from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+
+
+
+
+
 
 
 
@@ -49,15 +54,25 @@ class DetailEstate(generics.RetrieveUpdateDestroyAPIView):
     queryset = Estate.objects.all()
     serializer_class = EstateSerializer
 
+class ListCartProduct(generics.ListCreateAPIView):
+    name = "cartProduct"
+    queryset =CartProduct.objects.all()
+    serializer_class = CartProductSerializer
+
+class DetailCartProduct(generics.RetrieveUpdateDestroyAPIView):
+    name = "cartProduct"
+    queryset =CartProduct.objects.all()
+    serializer_class = CartProductSerializer
+
 class ListCart(generics.ListCreateAPIView):
     name = "cart"
-    queryset = Cart.objects.all()
+    queryset =Cart.objects.all()
     serializer_class = CartSerializer
 
 class DetailCart(generics.RetrieveUpdateDestroyAPIView):
     name = "cart"
     queryset = Cart.objects.all()
-    serializer_class = CartSerializer
+    serializer_class = CartSerializer    
 
 class ListProduct(generics.ListCreateAPIView):
     name = "product"
@@ -92,7 +107,7 @@ class AddToCartView(APIView):
     
     def post(self, request, *args, **kwargs):    
         
-     
+   
         
         # get product id from requested url
         product_id = self.kwargs['pro_id']
@@ -114,7 +129,7 @@ class AddToCartView(APIView):
                 cartproduct.save()
                 cart_obj.total += product_obj.selling_price
                 cart_obj.save()
-                return Response(status=HTTP_200_OK)
+                
             # new item is added in cart
             else:
                 cartproduct = CartProduct.objects.create(
@@ -131,7 +146,7 @@ class AddToCartView(APIView):
             cart_obj.save()
             
         
-            return Response({'msg':'Added to Successfully'},status=HTTP_200_OK)
+        return Response({'Added  Successfully'},status=HTTP_200_OK)
     
      
              
@@ -165,6 +180,8 @@ class ApiRoot(generics.GenericAPIView):
             'product_detail': reverse(DetailProduct.name, request=request),
             'checkout_list': reverse(ListOrder.name, request=request),
             'checkout_detail': reverse(DetailOrder.name, request=request),
+            # 'cartproduct_list': reverse(ListCartProduct.name, request=request),
+            # 'cartproduct_detail': reverse(DetailCartProduct.name, request=request),
             # 'add-to-cart': reverse(AddToCartView.name, request=request),
            
         })

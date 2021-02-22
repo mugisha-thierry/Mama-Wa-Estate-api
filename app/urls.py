@@ -4,7 +4,7 @@ from django.conf.urls import url,include
 from django.urls import path
 from rest_framework.routers import SimpleRouter
 
-from .views import ListCategory, DetailCategory, ListEstate, DetailEstate,ListCart, DetailCart,ListProduct, DetailProduct,ListOrder,DetailOrder,AddToCartView
+from .views import ListCategory, DetailCategory, ListEstate, DetailEstate,ListCart, DetailCart,ListProduct, DetailProduct,ListOrder,DetailOrder,AddToCartView, DetailCartProduct,ListCartProduct
 from . import views
 
 router = SimpleRouter()
@@ -23,6 +23,9 @@ urlpatterns=[
 
     path('cart/', ListCart.as_view(), name='cart'),
     path('cart/<int:pk>/', DetailCart.as_view(), name='cart'),
+
+    path('cartproduct/', ListCartProduct.as_view(), name='cartproduct'),
+    path('cartproduct/<int:pk>/', DetailCartProduct.as_view(), name='cartproduct'),
 
     path('product/', ListProduct.as_view(), name='product'),
     path('product/<int:pk>/', DetailProduct.as_view(), name='product'),
