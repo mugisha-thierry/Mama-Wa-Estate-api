@@ -46,13 +46,12 @@ INSTALLED_APPS = [
     # third party libraries
     'rest_framework',
     'rest_framework.authtoken',
-    # 'bootstrap4',
+    'bootstrap4',
     'corsheaders',
 
     # local apps
     'user',
     'app',
-    
 ]
 
 MIDDLEWARE = [
@@ -178,6 +177,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         # 'knox.auth.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+        
     ]
 }
 
