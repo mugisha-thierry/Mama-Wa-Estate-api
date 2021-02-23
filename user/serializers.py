@@ -4,9 +4,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework import serializers
 from .models import User, UserProfile
 
-
-
-
 User = get_user_model()
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -62,13 +59,6 @@ class PasswordChangeSerializer(serializers.Serializer):
     def validate_new_password(self, value):
         password_validation.validate_password(value)
         return value
-
-# class ProfileSerializer(serializers.ModelSerializer):
-    
-#     class Meta:
-#         model = Profile
-#         fields = ['user', 'image', 'bio'] 
-
 
 class UserProfileSerializer(serializers.ModelSerializer):
     

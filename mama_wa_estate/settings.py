@@ -190,8 +190,3 @@ ACCOUNT_USERNAME_REQUIRED = False
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-cloudinary.config(
-  cloud_name = "di4pd4yxp",
-  api_key = "865599825291137",
-  api_secret = "3-k9A1NISwjplnmUpyDdaNcEHfU"
-)

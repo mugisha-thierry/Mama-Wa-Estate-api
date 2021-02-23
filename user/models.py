@@ -23,35 +23,10 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return f"{self.email} - {self.first_name} {self.last_name}"
 
-# class Profile(models.Model):
-#     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-#     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
-#     bio = models.TextField(default="Hello there!")
-    
-#     def save_profile(self):
-#         self.save()
-
-#     def delete_profile(self):
-#         self.delete()
-        
-#     def __str__(self):
-#         return f'{self.user} Profile'
-        
-
-# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-# def create_user_profile(sender, instance, created, **kwargs):
-#     if created:
-#         Profile.objects.create(user=instance)
-
-# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-# def save_user_profile(sender, instance, **kwargs):
-#     instance.profile.save()  
-
-
-
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
     title = models.CharField(max_length=5)
+    location = models.CharField(max_length=255)
     dob = models.DateField()
     address = models.CharField(max_length=255)
     country = models.CharField(max_length=50)

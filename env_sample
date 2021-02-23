@@ -7,3 +7,10 @@ DB_PASSWORD="replace with password"
 ALLOWED_HOSTS=''
 DISABLE_COLLECTSTATIC=1
 DATABASE_URL='postgresql://localhost/DB_NAME?user=DB_USER&password=DB_PASSWORD'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+cloudinary.config(
+  cloud_name = "di4pd4yxp",
+  api_key = "865599825291137",
+  api_secret = "3-k9A1NISwjplnmUpyDdaNcEHfU"
+)
