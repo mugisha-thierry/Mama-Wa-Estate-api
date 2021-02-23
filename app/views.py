@@ -16,13 +16,13 @@ from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 from rest_framework import mixins, viewsets , generics
-from .models import ProductMerch, Estate, Vendor, Store, Category
+from .models import  Estate, Vendor, Store, Category, CartProduct, Cart, Product, Order
 
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializer import EstateSerializer,CategorySerializer,MerchSerializer,VendorSerializer
+from .serializer import EstateSerializer,CategorySerializer,VendorSerializer, CartProductSerializer, CartSerializer,ProductSerializer, OrderSerializer, StoreSerializer
 from rest_framework import mixins, viewsets , generics, status
 
 
@@ -174,7 +174,6 @@ class VendorsList(APIView):
     name = "vendors"
     permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
-        
         all_vendors = Vendor.objects.all()
         serializers = VendorSerializer(all_vendors, many=True)
         return Response(serializers.data)
@@ -187,26 +186,7 @@ class VendorsList(APIView):
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ApiRoot(generics.GenericAPIView):
-    name = 'api-root'
-    def get(self, request, *args, **kwargs):
-        return Response({
-            'vendors': reverse(VendorsList.name, request=request),
-            'category_list': reverse(ListCategory.name, request=request),
-            'category_detail': reverse(DetailCategory.name, request=request),
-            'estate_list': reverse(ListEstate.name, request=request),
-            'estate_detail': reverse(DetailEstate.name, request=request),
-            'cart_list': reverse(ListCart.name, request=request),
-            'cart_detail': reverse(DetailCart.name, request=request),
-            'product_list': reverse(ListProduct.name, request=request),
-            'product_detail': reverse(DetailProduct.name, request=request),
-            'checkout_list': reverse(ListOrder.name, request=request),
-            'checkout_detail': reverse(DetailOrder.name, request=request),
-            # 'cartproduct_list': reverse(ListCartProduct.name, request=request),
-            # 'cartproduct_detail': reverse(DetailCartProduct.name, request=request),
-            # 'add-to-cart': reverse(AddToCartView.name, request=request),
-           
-        })
+
         
 class StoresList(APIView):
     name = 'stores'
@@ -249,15 +229,25 @@ def storeDelete(request, pk):
     store = Store.objects.get(id=pk)
     store.delete()
     return Response('Item successfully deleted')
-
+        
 class ApiRoot(generics.GenericAPIView):
     name = 'api-root'
     def get(self, request, *args, **kwargs):
         return Response({
             'vendors': reverse(VendorsList.name, request=request),
-            'category': reverse(CategoryView.name, request=request),
-            'estate': reverse(EstateView.name, request=request),
+            'category_list': reverse(ListCategory.name, request=request),
+            'category_detail': reverse(DetailCategory.name, request=request),
+            'estate_list': reverse(ListEstate.name, request=request),
+            'estate_detail': reverse(DetailEstate.name, request=request),
+            'cart_list': reverse(ListCart.name, request=request),
+            'cart_detail': reverse(DetailCart.name, request=request),
+            'product_list': reverse(ListProduct.name, request=request),
+            'product_detail': reverse(DetailProduct.name, request=request),
+            'checkout_list': reverse(ListOrder.name, request=request),
+            'checkout_detail': reverse(DetailOrder.name, request=request),
             'stores':reverse(StoresList.name, request=request),
-            
+            # 'cartproduct_list': reverse(ListCartProduct.name, request=request),
+            # 'cartproduct_detail': reverse(DetailCartProduct.name, request=request),
+            # 'add-to-cart': reverse(AddToCartView.name, request=request),
+           
         })
-        
