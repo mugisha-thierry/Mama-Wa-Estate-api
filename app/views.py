@@ -300,3 +300,4 @@ class ApiRoot(generics.GenericAPIView):
             'stores':reverse(StoresList.name, request=request),
             
         })
+        
