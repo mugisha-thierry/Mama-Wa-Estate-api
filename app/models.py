@@ -36,17 +36,48 @@ class Category(models.Model):
 
 # Create a profile for the vendors
 
-class Vendor(models.Model):
+
+
+class CustomAccountManager(BaseUserManager):
+    def create_user(self, email, user_name, first_name, password, **other_fields):
+        if not emai:
+            raise ValueError('Please provide an email address')
+        email = self.normalize_email(email)
+        user = self.model(email=email, user_name=user_name, first_name=first_name, **other_fields)
+        user.set_password(password)
+        user.save()
+        return user
+
+    def create_superuser(self, email, user_name, password, **other_fields):
+        other_fields.setdefault('is_staff', True)
+        other_fields.setdefault('is_superuser', True)
+        other_fields.setdefault('is_active', True)
+
+        if other_fields.get('is_staff') is not True:
+            raise ValueError('Super user must be assigned as a staff')
+
+        if other_fields.get('is_superuser') is not True:
+            raise ValueError('Super user must be assigned as a super user')
+
+        if other_fields.get('is_staff') is not True:
+            raise ValueError('Super user must be assigned as a staff')
+        
+        return self.create_user(email, user_name, first_name, password, **other_fields)
+
+class Vendor(AbstractBaseUser, PermissionsMixin):
     '''
     Model creates user instances of vendors
     '''
-    username = models.CharField(max_length=30)
-    email = models.EmailField()
+    user_name = models.CharField(max_length=30, unique=True)
+    email = models.EmailField(unique=True)
     password = models.CharField(max_length=200)
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     
-  
+    objects = CustomAccountManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['user_name', 'first_name']
 
     def __str__(self):
         return self.username

@@ -69,7 +69,6 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-
 ROOT_URLCONF = 'mama_wa_estate.urls'
 
 TEMPLATES = [
@@ -189,6 +188,7 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'user.CustomUser'
+# user.CustomUser
 ACCOUNT_USERNAME_REQUIRED = False
 
 # Simplified static file serving.
