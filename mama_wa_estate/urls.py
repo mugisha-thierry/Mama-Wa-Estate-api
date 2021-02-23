@@ -30,7 +30,7 @@ urlpatterns = [
     # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('api/auth/', include('user.urls')),
-    path('api/', include("app.urls")),
+    path('api/', include('app.urls')),
     path('', ApiRoot.as_view(), name="ApiRoot.name"),
 ]
 

@@ -170,7 +170,6 @@ class VendorsList(APIView):
     name = "vendors"
     permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
-        
         all_vendors = Vendor.objects.all()
         serializers = VendorSerializer(all_vendors, many=True)
         return Response(serializers.data)
@@ -227,26 +226,26 @@ def storeDelete(request, pk):
     store.delete()
     return Response('Item successfully deleted')
 
-class ApiRoot(generics.GenericAPIView):
-Username￼    def get(self, request, *args, **kwargs):
-        return Response({
-            'vendors': reverse(VendorsList.name, request=request),
-            'category_list': reverse(ListCategory.name, request=request),
-            'category_detail': reverse(DetailCategory.name, request=request),
-            'estate_list': reverse(ListEstate.name, request=request),
-            'estate_detail': reverse(DetailEstate.name, request=request),
-            'cart_list': reverse(ListCart.name, request=request),
-            'cart_detail': reverse(DetailCart.name, request=request),
-            'product_list': reverse(ListProduct.name, request=request),
-            'product_detail': reverse(DetailProduct.name, request=request),
-            'checkout_list': reverse(ListOrder.name, request=request),
-            'checkout_detail': reverse(DetailOrder.name, request=request),
-            # 'cartproduct_list': reverse(ListCartProduct.name, request=request),
-            # 'cartproduct_detail': reverse(DetailCartProduct.name, request=request),
-            # 'add-to-cart': reverse(AddToCartView.name, request=request),
-            'stores':reverse(StoresList.name, request=request),
+# class ApiRoot(generics.GenericAPIView):
+# Username￼    def get(self, request, *args, **kwargs):
+#         return Response({
+#             'vendors': reverse(VendorsList.name, request=request),
+#             'category_list': reverse(ListCategory.name, request=request),
+#             'category_detail': reverse(DetailCategory.name, request=request),
+#             'estate_list': reverse(ListEstate.name, request=request),
+#             'estate_detail': reverse(DetailEstate.name, request=request),
+#             'cart_list': reverse(ListCart.name, request=request),
+#             'cart_detail': reverse(DetailCart.name, request=request),
+#             'product_list': reverse(ListProduct.name, request=request),
+#             'product_detail': reverse(DetailProduct.name, request=request),
+#             'checkout_list': reverse(ListOrder.name, request=request),
+#             'checkout_detail': reverse(DetailOrder.name, request=request),
+#             # 'cartproduct_list': reverse(ListCartProduct.name, request=request),
+#             # 'cartproduct_detail': reverse(DetailCartProduct.name, request=request),
+#             # 'add-to-cart': reverse(AddToCartView.name, request=request),
+#             'stores':reverse(StoresList.name, request=request),
             
-        })
+#         })
         
 class StoresList(APIView):
     name = 'stores'
@@ -289,15 +288,25 @@ def storeDelete(request, pk):
     store = Store.objects.get(id=pk)
     store.delete()
     return Response('Item successfully deleted')
-
+        
 class ApiRoot(generics.GenericAPIView):
     name = 'api-root'
     def get(self, request, *args, **kwargs):
         return Response({
             'vendors': reverse(VendorsList.name, request=request),
-            'category': reverse(CategoryView.name, request=request),
-            'estate': reverse(EstateView.name, request=request),
+            'category_list': reverse(ListCategory.name, request=request),
+            'category_detail': reverse(DetailCategory.name, request=request),
+            'estate_list': reverse(ListEstate.name, request=request),
+            'estate_detail': reverse(DetailEstate.name, request=request),
+            'cart_list': reverse(ListCart.name, request=request),
+            'cart_detail': reverse(DetailCart.name, request=request),
+            'product_list': reverse(ListProduct.name, request=request),
+            'product_detail': reverse(DetailProduct.name, request=request),
+            'checkout_list': reverse(ListOrder.name, request=request),
+            'checkout_detail': reverse(DetailOrder.name, request=request),
             'stores':reverse(StoresList.name, request=request),
-            
+            # 'cartproduct_list': reverse(ListCartProduct.name, request=request),
+            # 'cartproduct_detail': reverse(DetailCartProduct.name, request=request),
+            # 'add-to-cart': reverse(AddToCartView.name, request=request),
+           
         })
-        

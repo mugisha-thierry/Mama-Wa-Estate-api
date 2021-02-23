@@ -39,6 +39,3 @@ urlpatterns=[
     path('checkout/<int:pk>/', DetailOrder.as_view(), name='order'),
 
 ]
-
-]
-
