@@ -6,9 +6,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from .models import UserProfile
 from django.http import Http404
-from  .serializers import UserSerializer
 from rest_framework.views import APIView
-
+from .models import UserProfile
 
 #local imports
 from . import serializers
@@ -16,14 +15,15 @@ from .utils import get_and_authenticate_user, create_user_account
 
 User = get_user_model()
 
+
 class AuthViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny, ]
     serializer_class = serializers.EmptySerializer
     serializer_classes = {
         'login': serializers.UserLoginSerializer,
-        'register': serializers.UserRegisterSerializer
+        'register': serializers.UserRegisterSerializer,
+        'profile' :serializers.UserProfileSerializer
     }
-
 
     @action(methods=['POST', 'GET'], detail=False)
     def register(self, request):
@@ -39,7 +39,6 @@ class AuthViewSet(viewsets.GenericViewSet):
         }
         return Response(data, status=status.HTTP_201_CREATED)
 
-
     @action(methods=['POST', "GET"], detail=False)
     def login(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -53,7 +52,6 @@ class AuthViewSet(viewsets.GenericViewSet):
         }
         return Response(data, status=status.HTTP_200_OK)
 
-
     @action(methods=['POST', ], detail=False)
     def logout(self, request):
         logout(request)
@@ -61,7 +59,6 @@ class AuthViewSet(viewsets.GenericViewSet):
             "status":status.HTTP_200_OK,
             'success':'Successfully logged out'}
         return Response(data, status=status.HTTP_200_OK)
-
 
     @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
     def password_change(self, request):
@@ -75,7 +72,6 @@ class AuthViewSet(viewsets.GenericViewSet):
         }
         return Response(res, status=status.HTTP_204_NO_CONTENT)
         
-
     # dynamically select serializers 
     def get_serializer_class(self):
         if not isinstance(self.serializer_classes, dict):
@@ -89,14 +85,28 @@ class ProfileSerializer(APIView):
     """
     List all profile, or create a new snippet.
     """
+    permission_classes = [AllowAny, ]
+    serializer_class = serializers.EmptySerializer
+    http_method_names = ['get', 'head', 'post']
     
+
+
+    @action(methods=['POST', 'GET'], detail=False, permission_classes=[IsAuthenticated, ])
     def post(self, request, format=None):
         serializer = ProfileSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+        # serializer = self.get_serializer(data=request.data)
+        # serializer.is_valid(raise_exception=True)
+        
 
+        data = {
+            "success": "Your profile has been Successfully updated ",
+            # "status": status.HTTP_200_OK,
+            # "data":serialized_data
+        }
+        return Response(data, status=status.HTTP_201_CREATED)
+       
 
-
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
 

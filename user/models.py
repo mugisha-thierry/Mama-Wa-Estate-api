@@ -27,12 +27,26 @@ class CustomUser(AbstractUser):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
-    title = models.CharField(max_length=5)
+    bio = models.CharField(max_length=5)
     dob = models.DateField()
-    address = models.CharField(max_length=255)
+    location = models.CharField(max_length=255)
     country = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
     zip = models.CharField(max_length=5)
     photo = models.ImageField(upload_to='uploads', blank=True)     
 
+    
+    def __str__(self):
+        return  f'{self.user.username}' 
+
+    def save_profile(self):
+        self.save()
         
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()       
