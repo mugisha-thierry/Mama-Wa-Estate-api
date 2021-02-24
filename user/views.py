@@ -90,7 +90,6 @@ class ProfileSerializer(APIView):
     List all profile, or create a new snippet.
     """
     
-
     def post(self, request, format=None):
         serializer = ProfileSerializer(data=request.data)
         if serializer.is_valid():
