@@ -11,7 +11,7 @@ from rest_framework import permissions
 from django.contrib.auth.models import User
 from django.forms.models import model_to_dict
 from django.db.models import Q
-
+from rest_framework import filters
 
 from .models import Category, Estate, Cart, Product,Order,Vendor,CartProduct, Store
 from .serializer import (
@@ -51,6 +51,7 @@ class ListCartProduct(generics.ListCreateAPIView):
     name = "cartProduct"
     queryset =CartProduct.objects.all()
     serializer_class = CartProductSerializer
+    
 
 class DetailCartProduct(generics.RetrieveUpdateDestroyAPIView):
     name = "cartProduct"
@@ -71,6 +72,9 @@ class ListProduct(generics.ListCreateAPIView):
     name = "product"
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    search_fields = ['name', 'category__name']
+    filter_backends = (filters.SearchFilter,)
+    
 
 class DetailProduct(generics.RetrieveUpdateDestroyAPIView):
     name = "product"
@@ -106,7 +110,7 @@ class AddToCartView(APIView):
             cart_obj = Cart.objects.get(id=cart_id)
             this_product_in_cart = cart_obj.cartproduct_set.filter(
                 product=product_obj)
-
+   
             # item already exists in cart
             if this_product_in_cart.exists():
                 cartproduct = this_product_in_cart.last()
@@ -130,7 +134,7 @@ class AddToCartView(APIView):
                 cart=cart_obj, product=product_obj, rate=product_obj.selling_price, quantity=1, subtotal=product_obj.selling_price)
             cart_obj.total += product_obj.selling_price
             cart_obj.save()
-            
+        
         
         return Response({'Added  Successfully'},status=HTTP_200_OK)
     
