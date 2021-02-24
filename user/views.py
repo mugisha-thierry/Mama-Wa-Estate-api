@@ -85,7 +85,7 @@ class AuthViewSet(viewsets.GenericViewSet):
             return self.serializer_classes[self.action]
         return super().get_serializer_class()
 
-class ProfileList(APIView):
+class ProfileSerializer(APIView):
     """
     List all profile, or create a new snippet.
     """

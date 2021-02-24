@@ -9,6 +9,8 @@ import cloudinary
 from cloudinary.models import CloudinaryField
 
 
+
+
 class CustomUser(AbstractUser):
     username = models.CharField("username", unique=True, max_length=255, blank=True)
     email = models.EmailField('email address', unique=True)

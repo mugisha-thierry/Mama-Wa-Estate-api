@@ -4,6 +4,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework import serializers
 from .models import User, UserProfile
 
+
 User = get_user_model()
 
 class UserRegisterSerializer(serializers.ModelSerializer):

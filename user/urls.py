@@ -7,7 +7,7 @@ router.register('', views.AuthViewSet,  basename='auth')
 urlpatterns = router.urls
 
 urlpatterns = [
-    path('profile/', views.ProfileList.as_view(),name='profile'), 
+    path('profile/', views.ProfileSerializer.as_view(),name='profile'), 
       
 ]
 
