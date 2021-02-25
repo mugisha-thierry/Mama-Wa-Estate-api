@@ -7,6 +7,7 @@ from .models import User, UserProfile
 
 User = get_user_model()
 
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     """
     serializer for registering a user
@@ -63,6 +64,7 @@ class PasswordChangeSerializer(serializers.Serializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     # profile = UserProfileSerializer(required=True)
+
     class Meta:
         model = UserProfile
         fields = ('bio', 'dob', 'location', 'country', 'city', 'zip', 'photo')

@@ -97,13 +97,12 @@ class ProfileSerializer(APIView):
         # serializer = self.get_serializer(data=request.data)
         # serializer.is_valid(raise_exception=True)
         
-
         data = {
             "success": "Your profile has been Successfully updated ",
-            # "status": status.HTTP_200_OK,
+    
             # "data":serialized_data
         }
-        return Response(data, status=status.HTTP_201_CREATED)
+        # return Response(data, status=status.HTTP_201_CREATED)
        
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
