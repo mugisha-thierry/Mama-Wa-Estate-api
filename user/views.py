@@ -9,6 +9,7 @@ from django.http import Http404
 from rest_framework.views import APIView
 from .models import UserProfile
 
+
 #local imports
 from . import serializers
 from .utils import get_and_authenticate_user, create_user_account
@@ -83,29 +84,27 @@ class AuthViewSet(viewsets.GenericViewSet):
 
 class ProfileSerializer(APIView):
     """
-    List all profile, or create a new snippet.
+    serializer for user profile
     """
     permission_classes = [AllowAny, ]
     serializer_class = serializers.EmptySerializer
-    http_method_names = ['get', 'head', 'post']
+    http_method_names = ['get', 'post']
     
-
-
-    @action(methods=['POST', 'GET'], detail=False, permission_classes=[IsAuthenticated, ])
+    @action(methods=['Get'], detail=False, permission_classes=[IsAuthenticated, ])
+    def get(self, request, format=None):
+        serializer = ProfileSerializer(data=request.data)
+        data = {
+            "success": "Profile updated sucesfully",
+            "status": status.HTTP_200_OK,
+        }
+        return Response(data, status=status.HTTP_200_OK)
+        
+    @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
     def post(self, request, format=None):
         serializer = ProfileSerializer(data=request.data)
-        # serializer = self.get_serializer(data=request.data)
-        # serializer.is_valid(raise_exception=True)
-        
-        data = {
-            "success": "Your profile has been Successfully updated ",
-    
-            # "data":serialized_data
-        }
-        # return Response(data, status=status.HTTP_201_CREATED)
-       
-
         return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+           
+
         
 

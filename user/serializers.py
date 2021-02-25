@@ -64,10 +64,9 @@ class PasswordChangeSerializer(serializers.Serializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     # profile = UserProfileSerializer(required=True)
-
     class Meta:
         model = UserProfile
-        fields = ('bio', 'dob', 'location', 'country', 'city', 'zip', 'photo')
+        fields = ('bio', 'dob', 'location',  'zip', 'photo')
 
 
     
