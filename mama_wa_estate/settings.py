@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'app',
 ]
 
+# AUTH_USER_MODEL = 'app.User'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -194,6 +196,7 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'user.CustomUser'
+#Above code changes built in user model to ours
 # user.CustomUser
 ACCOUNT_USERNAME_REQUIRED = False
 
