@@ -1,10 +1,10 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url,include
-from django.urls import path
+from django.urls import path,re_path
 from rest_framework.routers import SimpleRouter
 
-from .views import ListCategory, DetailCategory, ListEstate, DetailEstate,ListCart, DetailCart,ListProduct, DetailProduct,ListOrder,DetailOrder,AddToCartView, DetailCartProduct,ListCartProduct
+from .views import ListCategory, DetailCategory, ListEstate, DetailEstate,ListCart, DetailCart,ListProduct, DetailProduct,ListOrder,DetailOrder,AddToCartView, DetailCartProduct,ListCartProduct,ListRating
 from . import views
 
 router = SimpleRouter()
@@ -31,6 +31,7 @@ urlpatterns=[
 
     path('product/', ListProduct.as_view(), name='product'),
     path('product/<int:pk>/', DetailProduct.as_view(), name='product'),
+    path('rating/', ListRating.as_view(), name='rating'),
 
     path('add-to-cart/<int:pro_id>/', AddToCartView.as_view(), name='add-to-cart'),
     # path('checkout/', views.CheckoutView.as_view(), name='checkout'),

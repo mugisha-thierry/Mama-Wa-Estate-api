@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from .models import Estate, Category, Cart,Product,Vendor,Order,CartProduct,Store
+from .models import Estate, Category, Cart,Product,Vendor,Order,CartProduct,Store,Rating
 
 
 class EstateSerializer(serializers.ModelSerializer):
@@ -55,4 +55,9 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = '__all__'
+
+class RatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = '__all__'        
         

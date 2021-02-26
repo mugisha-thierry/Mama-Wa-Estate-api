@@ -13,7 +13,7 @@ from django.forms.models import model_to_dict
 from django.db.models import Q
 from rest_framework import filters
 
-from .models import Category, Estate, Cart, Product,Order,Vendor,CartProduct, Store
+from .models import Category, Estate, Cart, Product,Order,Vendor,CartProduct, Store,Rating
 from .serializer import (
     EstateSerializer,
     CategorySerializer,
@@ -22,9 +22,15 @@ from .serializer import (
     OrderSerializer,
     CartProductSerializer,
     VendorSerializer,
-    StoreSerializer
+    StoreSerializer,
+    RatingSerializer
     )
 from .forms import *
+from rest_framework.permissions import AllowAny,IsAuthenticated, IsAdminUser
+
+
+
+
 # from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 class ListCategory(generics.ListCreateAPIView):
@@ -81,7 +87,10 @@ class DetailProduct(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer    
 
-
+class ListRating(generics.ListCreateAPIView):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializer 
+    
 class ListOrder(generics.ListCreateAPIView):
     name = "order"
     queryset = Order.objects.all()
@@ -96,9 +105,10 @@ class DetailOrder(generics.RetrieveUpdateDestroyAPIView):
 
 class AddToCartView(APIView):
     name = "add-to-cart"
+    permission_classes = [IsAuthenticated]
     
     def post(self, request, *args, **kwargs):    
-        
+        user  = request.user
         # get product id from requested url
         product_id = self.kwargs['pro_id']
         # get product

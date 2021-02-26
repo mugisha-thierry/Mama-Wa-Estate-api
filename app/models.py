@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 import datetime as dt
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
@@ -91,7 +92,7 @@ class Product(models.Model):
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,blank=True,null=True)
     total = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -142,3 +143,12 @@ class Order(models.Model):
     def __str__(self):
         return "Order: " + str(self.id)
 
+
+class Rating(models.Model):
+    Product=models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,blank=True,null=True)
+    review= models.TextField(blank=True, null=True)
+    stars = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    
+    def __str__(self):
+        return self.stars
