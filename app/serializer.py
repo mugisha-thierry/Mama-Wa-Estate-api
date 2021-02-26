@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from .models import Estate, Category, Cart,Product,Vendor,Order,CartProduct, Store
+from .models import Estate, Category, Cart,Product,Order,CartProduct, Store, Vendor
 
 
 class EstateSerializer(serializers.ModelSerializer):

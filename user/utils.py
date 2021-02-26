@@ -4,6 +4,7 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from .models import Vendor
 
 def create_user_account(username, email, password, first_name="",
                         last_name="", **extra_fields):
@@ -23,3 +24,14 @@ def get_and_authenticate_user(username, password):
         raise serializers.ValidationError(res)
 
     return user
+
+
+def create_vendor_account(username, email, password, first_name="",
+                        last_name="", **extra_fields):
+    print("username")
+    print(email)
+    print(password)
+    vendor = Vendor.objects.create_user(
+        username=username, email=email,  first_name=first_name,
+        last_name=last_name, password=password, **extra_fields)
+    return vendor

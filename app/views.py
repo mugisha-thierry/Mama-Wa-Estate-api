@@ -16,13 +16,13 @@ from rest_framework import permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 from rest_framework import mixins, viewsets , generics
-from .models import  Estate, Vendor, Store, Category, CartProduct, Cart, Product, Order
+from .models import  Estate,  Store, Category, CartProduct, Cart, Product, Order, Vendor
 
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializer import EstateSerializer,CategorySerializer,VendorSerializer, CartProductSerializer, CartSerializer,ProductSerializer, OrderSerializer, StoreSerializer
+from .serializer import EstateSerializer,CategorySerializer, CartProductSerializer, CartSerializer,ProductSerializer, OrderSerializer, StoreSerializer, VendorSerializer
 from rest_framework import mixins, viewsets , generics, status
 
 

@@ -21,6 +21,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from app.views import ApiRoot
 
 
+
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
@@ -32,5 +33,6 @@ urlpatterns = [
     path('api/auth/', include('user.urls')),
     path('api/', include('app.urls')),
     path('', ApiRoot.as_view(), name="ApiRoot.name"),
+    
 ]
 
