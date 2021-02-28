@@ -8,6 +8,7 @@ from rest_framework import mixins, viewsets , generics, status
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework import permissions
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.contrib.auth.models import User
 from django.forms.models import model_to_dict
 from django.db.models import Q
@@ -93,6 +94,28 @@ class DetailOrder(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer    
 
+    def post(self, request, format=None):
+        serializers =  EstateSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)        
+
+
+class CategoryView(APIView):
+    name = "category"
+    def get(self, request, format=None):
+        all_category = Category.objects.all()
+        serializers =CategorySerializer(all_category, many=True)
+        return Response(serializers.data)
+
+    def post(self, request, format=None):
+        serializers =  CategorySerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)        
+
 
 class AddToCartView(APIView):
     name = "add-to-cart"
@@ -146,13 +169,14 @@ class PostViewSet(viewsets.ModelViewSet):
 
 class VendorsList(APIView):
     name = "vendors"
+    permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
         all_vendors = Vendor.objects.all()
         serializers = VendorSerializer(all_vendors, many=True)
         return Response(serializers.data)
     
     def post(self, request, format=None):
-        permission_classes = [IsAuthenticated]
+        
         serializers = VendorSerializer(data = request.data)
         if serializers.is_valid():
             serializers.save()
@@ -203,6 +227,69 @@ def storeDelete(request, pk):
     store.delete()
     return Response('Item successfully deleted')
 
+# class ApiRoot(generics.GenericAPIView):
+# Username￼    def get(self, request, *args, **kwargs):
+#         return Response({
+#             'vendors': reverse(VendorsList.name, request=request),
+#             'category_list': reverse(ListCategory.name, request=request),
+#             'category_detail': reverse(DetailCategory.name, request=request),
+#             'estate_list': reverse(ListEstate.name, request=request),
+#             'estate_detail': reverse(DetailEstate.name, request=request),
+#             'cart_list': reverse(ListCart.name, request=request),
+#             'cart_detail': reverse(DetailCart.name, request=request),
+#             'product_list': reverse(ListProduct.name, request=request),
+#             'product_detail': reverse(DetailProduct.name, request=request),
+#             'checkout_list': reverse(ListOrder.name, request=request),
+#             'checkout_detail': reverse(DetailOrder.name, request=request),
+#             # 'cartproduct_list': reverse(ListCartProduct.name, request=request),
+#             # 'cartproduct_detail': reverse(DetailCartProduct.name, request=request),
+#             # 'add-to-cart': reverse(AddToCartView.name, request=request),
+#             'stores':reverse(StoresList.name, request=request),
+            
+#         })
+        
+class StoresList(APIView):
+    name = 'stores'
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    def get(self, request, format=None):
+        all_stores = Store.objects.all()
+        serializers = StoreSerializer(all_stores, many=True)
+        return Response(serializers.data)
+    
+    def post(self, request, format=None):
+        serializers = StoreSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data,  status=status.HTTP_201_CREATED)
+
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def storeDetail(request, pk):
+    name = 'store-detail'
+    store = Store.objects.get(id=pk)
+    serializer = StoreSerializer(store, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def storeUpdate(request, pk):
+    name = 'store-update'
+    permission_classes = [IsAuthenticated]
+    store = Store.objects.get(id=pk)
+    serializer = StoreSerializer(instance=store, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+@api_view(['DELETE','GET'])
+def storeDelete(request, pk):
+    name = 'store-delete'
+    permission_classes = [IsAuthenticated]
+    store = Store.objects.get(id=pk)
+    store.delete()
+    return Response('Item successfully deleted')
+        
 class ApiRoot(generics.GenericAPIView):
     name = 'api-root'
     def get(self, request, *args, **kwargs):
@@ -218,10 +305,9 @@ class ApiRoot(generics.GenericAPIView):
             'product_detail': reverse(DetailProduct.name, request=request),
             'checkout_list': reverse(ListOrder.name, request=request),
             'checkout_detail': reverse(DetailOrder.name, request=request),
+            'stores':reverse(StoresList.name, request=request),
             # 'cartproduct_list': reverse(ListCartProduct.name, request=request),
             # 'cartproduct_detail': reverse(DetailCartProduct.name, request=request),
             # 'add-to-cart': reverse(AddToCartView.name, request=request),
-            'stores':reverse(StoresList.name, request=request),
-            
+           
         })
-        

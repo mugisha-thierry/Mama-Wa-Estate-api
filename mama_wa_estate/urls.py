@@ -20,6 +20,10 @@ from django.urls import path
 from rest_framework.authtoken.views import obtain_auth_token
 from app.views import ApiRoot
 
+
+
+# Wire up our API using automatic URL routing.
+# Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('admin/', admin.site.urls),
     # url('', include('app.urls')),
@@ -27,7 +31,8 @@ urlpatterns = [
     # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('api/auth/', include('user.urls')),
-    path('api/', include("app.urls")),
+    path('api/', include('app.urls')),
     path('', ApiRoot.as_view(), name="ApiRoot.name"),
+    
 ]
 

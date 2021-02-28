@@ -10,7 +10,6 @@ class EstateSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -55,4 +54,5 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = '__all__'
+        
         

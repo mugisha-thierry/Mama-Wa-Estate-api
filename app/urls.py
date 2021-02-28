@@ -4,11 +4,13 @@ from django.conf.urls import url,include
 from django.urls import path
 from rest_framework.routers import SimpleRouter
 
+
 from .views import ListCategory, DetailCategory, ListEstate, DetailEstate,ListCart, DetailCart,ListProduct, DetailProduct,ListOrder,DetailOrder,AddToCartView, DetailCartProduct,ListCartProduct
 from . import views
 
 router = SimpleRouter()
 router.register('products', views.PostViewSet, basename='posts')
+
 
 urlpatterns=[
     path('stores/', views.StoresList.as_view(), name='stores'),
@@ -37,6 +39,6 @@ urlpatterns=[
 
     path('checkout/', ListOrder.as_view(), name='order'),
     path('checkout/<int:pk>/', DetailOrder.as_view(), name='order'),
+   
 
 ]
-

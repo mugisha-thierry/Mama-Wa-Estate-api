@@ -16,3 +16,18 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return f"{self.email} - {self.first_name} {self.last_name}"
+
+class Vendor(CustomUser):
+    '''
+    Model creates user instances of vendors
+    '''
+    is_vendor = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.username
+
+    def saveVendor(self):
+        self.save()
+
+    def deleteVendor(self):
+        self.delete()
