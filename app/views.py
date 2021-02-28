@@ -8,6 +8,7 @@ from rest_framework import mixins, viewsets , generics, status
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework import permissions
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.contrib.auth.models import User
 from django.forms.models import model_to_dict
 from django.db.models import Q

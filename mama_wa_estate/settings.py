@@ -180,7 +180,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         # 'knox.auth.TokenAuthentication',
-    ],
+    ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
         
@@ -189,10 +189,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
         
     ]
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-        
-    )
+    
 }
 
 AUTH_USER_MODEL = 'user.CustomUser'
