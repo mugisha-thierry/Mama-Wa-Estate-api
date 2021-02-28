@@ -8,7 +8,7 @@ from . import views
 
 router = routers.DefaultRouter(trailing_slash=True)
 router.register('', views.AuthViewSet, basename='auth')
-router.register('vendors', views.AuthVendors, basename='vendor-auth')
+# router.register('vendors', views.AuthVendors, basename='vendor-auth')
 
 # urlpatterns = [
 #     path('register/', views.AuthVendors, name = 'register'),
